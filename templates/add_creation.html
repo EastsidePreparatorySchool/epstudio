@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Add Creation{% endblock %}
+
+{% block content %}
+<h1>Add Creation for {{ user.first_name }} {{ user.last_name }}</h1>
+<form method="post">
+    <div>
+        <label for="name">Creation Name:</label>
+        <input type="text" name="name" id="name" required>
+    </div>
+    <div>
+        <label for="caption">Caption:</label>
+        <textarea name="caption" id="caption"></textarea>
+    </div>
+    <!-- In a real application, handle file uploads -->
+    <div>
+        <label for="photo_path">Photo Path:</label>
+        <input type="text" name="photo_path" id="photo_path">
+    </div>
+    <div>
+        <label for="video_path">Video Path:</label>
+        <input type="text" name="video_path" id="video_path">
+    </div>
+    <button type="submit">Add Creation</button>
+</form>
+{% endblock %}

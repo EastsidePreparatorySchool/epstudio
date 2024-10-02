@@ -1,53 +1,36 @@
-<!-- base.html -->
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>New PWA App</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}EPStudio{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="brand">EPStudio</a>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('list_users') }}">Users</a></li>
+                <li><a href="{{ url_for('user_profile', user_id=current_user.id) }}">My Profile</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
 
-        <link rel="icon" href="{{url_for('static', filename='icons/icon_144x144.png')}}" type="image/png">
-        <link rel="icon" href="{{url_for('static', filename='icons/icon_192x192.png')}}" type="image/png">
-        <link rel="icon" href="{{url_for('static', filename='icons/icon_512x512.png')}}" type="image/png">
-        <link rel="apple-touch-icon" href="{{url_for('static', filename='icons/icon_144x144.png')}}" type="image/png">
-        <link rel="apple-touch-icon" href="{{url_for('static', filename='icons/icon_192x192.png')}}" type="image/png">
-        <link rel="apple-touch-icon" href="{{url_for('static', filename='icons/icon_512x512.png')}}" type="image/png">
-        <link rel="manifest" href="/manifest.json">
-        <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-            navigator.serviceWorker.register("/sw.js").then(function(registration) {
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }, function(err) {
-                console.log('ServiceWorker registration failed: ', err);
-            });
-            });
-        };
-        </script>
-        {% block head %}
-        <!-- this is where content will be added from downstream templates-->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        {% block content %}
         {% endblock %}
-    </head>
-    
-    
-    <body>
-        <section class="hero is-link is-fullheight">
-            <div class="hero-head">
-                <div class="container is-fluid">
-                    
-                </div>
-            </div>
-            <div class="hero-body">
-                <div class="container has-text-centered">
-                        
-                            {% block body %}
-                            <!-- this is where content will be added from downstream templates-->
-                            {% endblock %}
-                        
-                </div>
-            </div>
-        </section>
-    </body>
+    </div>
+</body>
 </html>
-

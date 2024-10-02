@@ -1,29 +1,23 @@
 {
-    "name": "PWA App Template",
-    "short_name": "PWA App",
-    "start_url": "/",
-    "scope": "/",
-    "display": "standalone",
-    "theme_color": "#317EFB",
-    "background_color": "#317EFB",
+    "short_name": "EPStudio",
+    "name": "EPStudio - Student Creations",
     "icons": [
       {
-        "src": "/static/icons/icon-144x144.png",
-        "sizes": "144x144",
-        "type": "image/png",
-        "purpose": "any maskable"
-      },
-      {
-        "src": "/static/icons/icon-192x192.png",
+        "src": "icons/icon-192x192.png",
         "sizes": "192x192",
-        "type": "image/png",
-        "purpose": "any maskable"
+        "type": "image/png"
       },
       {
-        "src": "/static/icons/icon-512x512.png",
+        "src": "icons/icon-512x512.png",
         "sizes": "512x512",
-        "type": "image/png",
-        "purpose": "any maskable"
+        "type": "image/png"
       }
-    ]
+    ],
+    "start_url": "/",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#2c3e50",
+    "description": "A platform to document and display student creations."
   }
+  

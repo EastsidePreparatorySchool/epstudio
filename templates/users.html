@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{# This template extends the 'base.html' template.
+   It means that it inherits from 'base.html' and can fill in or override blocks defined there. #}
+
+{% block title %}Users - EPStudio{% endblock %}
+{# This block sets the content for the 'title' block defined in 'base.html'.
+   It will set the page title to "Users - EPStudio". #}
+
+{% block content %}
+{# This block fills in the 'content' block from 'base.html'. Everything inside will be placed in the 'content' area of the base template. #}
+
+<h1>Users</h1>
+<ul>
+    {% for user in users %}
+    {# Start a loop over the 'users' list passed from the view function.
+       For each 'user' in 'users', the code inside the loop will be executed. #}
+
+    <li>
+        <a href="{{ url_for('user_profile', user_id=user.id) }}">
+            {# Create a hyperlink to the user's profile page.
+               'url_for' generates the URL for the 'user_profile' route, passing 'user_id' as a parameter. #}
+
+            {{ user.first_name }} {{ user.last_name }}
+            {# Display the user's first and last name. #}
+        </a>
+    </li>
+
+    {% endfor %}
+    {# End of the loop over 'users'. #}
+</ul>
+{% endblock %}
+{# End of the 'content' block. #}

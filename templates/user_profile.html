@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.first_name }} {{ user.last_name }} - Profile{% endblock %}
+
+{% block content %}
+<h1>{{ user.first_name }} {{ user.last_name }}</h1>
+<p>Email: {{ user.email }}</p>
+<p>Graduation Year: {{ user.gradyear }}</p>
+<p>Pronouns: {{ user.pronouns }}</p>
+
+<h2>Creations</h2>
+{% if user.creations %}
+<ul>
+    {% for creation in user.creations %}
+    <li>
+        <strong>{{ creation.name }}</strong> - {{ creation.creation_date.strftime('%Y-%m-%d') }}
+        <p>{{ creation.caption }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No creations yet.</p>
+{% endif %}
+
+{% if current_user.id == user.id or current_user.is_admin %}
+<a href="{{ url_for('add_creation', user_id=user.id) }}">Add Creation</a>
+{% endif %}
+{% endblock %}
