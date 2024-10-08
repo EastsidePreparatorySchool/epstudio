@@ -177,7 +177,10 @@ Dependencies are the packages that EPStudio needs to run.
 bash
 Copy code<br />
 python -m pip install -r requirements.txt<br />
-This command reads the requirements.txt file and installs all the listed packages.
+This command reads the requirements.txt file and installs all the listed packages.<br />
+This might break on the SQL Alchemy install, so we installed those manually with:<br />
+python3 -m pip install SQLAlchemy<br />
+python3 -m pip install Flask-Migrate <br />
 
 7. Set Up the Database
 EPStudio uses a database to store information. You'll need to set it up.
