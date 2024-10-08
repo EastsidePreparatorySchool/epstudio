@@ -175,8 +175,8 @@ After activation, your command prompt should show (venv) at the beginning.
 Dependencies are the packages that EPStudio needs to run.
 
 bash
-Copy code
-pip install -r requirements.txt
+Copy code<br />
+python -m pip install -r requirements.txt<br />
 This command reads the requirements.txt file and installs all the listed packages.
 
 7. Set Up the Database
