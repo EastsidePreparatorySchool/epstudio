@@ -400,11 +400,11 @@ I get a database error:
 Make sure you completed Step 7 to set up the database.
 I'm having trouble installing Python or Git:
 
-Ask for help from a teacher, parent, or friend who is familiar with installing software.
+Ask for help from a teacher, parent, or friend who is familiar with installing software.<br />
 Next Steps<br />
 Now that you have EPStudio running, here are some ideas to explore:
 <br />
-Add More Users: Modify the code to allow new user registration.<br />
+Add More Users: Modify the code to allow new user registration.
 <br />
 Enhance the UI: Customize the templates to change the look and feel of the app.
 <br />
