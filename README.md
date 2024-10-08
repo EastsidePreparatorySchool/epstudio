@@ -148,6 +148,10 @@ Create the Virtual Environment:
 
 bash
 Copy code
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+bash
+Copy code
 python3 -m venv venv
 This command creates a new directory called venv inside your project folder.
 
@@ -159,6 +163,7 @@ Windows:
 bash
 Copy code
 venv\Scripts\activate
+
 macOS/Linux:
 
 bash
