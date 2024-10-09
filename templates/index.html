@@ -7,7 +7,12 @@
     <h1>Welcome to EPStudio</h1>
     <p>Your platform to showcase and explore student creations.</p>
     <a href="{{ url_for('list_users') }}" class="button">Explore Users</a>
-    <a href="{{ url_for('user_profile', user_id=current_user.id) }}" class="button">View My Profile</a>
+    {% if current_user.is_authenticated: %}
+        <a href="{{ url_for('user_profile', user_id=current_user.id) }}" class="button">View My Profile</a>
+        
+    {% else: %}
+        Please Login
+    {% endif %}
 </div>
 
 <div class="recent-creations">
