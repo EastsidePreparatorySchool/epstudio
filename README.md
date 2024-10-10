@@ -146,13 +146,9 @@ A virtual environment is like a separate box where you can install Python packag
 
 Create the Virtual Environment:
 
-bash
-Copy code
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-bash
-Copy code
-python3 -m venv venv
+python3 -m venv venv<br />
 This command creates a new directory called venv inside your project folder.
 
 5. Activate the Virtual Environment
@@ -160,54 +156,44 @@ Before installing packages, you need to activate the virtual environment.
 
 Windows:
 
-bash
-Copy code
-venv\Scripts\activate
+<br />
+venv\Scripts\activate<br />
 
 macOS/Linux:
 
-bash
-Copy code
-source venv/bin/activate
+<br />
+source venv/bin/activate<br />
 After activation, your command prompt should show (venv) at the beginning.
 
 6. Install Dependencies
 Dependencies are the packages that EPStudio needs to run.
 
-bash
-Copy code<br />
+<br />
 python -m pip install -r requirements.txt<br />
 This command reads the requirements.txt file and installs all the listed packages.<br />
 This might break on the SQL Alchemy install, so we installed those manually with:<br />
-python3 -m pip install SQLAlchemy<br />
-python3 -m pip install Flask-Migrate <br />
 
 7. Set Up the Database
 EPStudio uses a database to store information. You'll need to set it up.
 
 Initialize the Database Migrations:
 
-bash
-Copy code
-flask db init
+<br />
+flask db init<br />
 Create the Migration Script:
+<br />
 
-bash
-Copy code
-flask db migrate -m "Initial migration."
+flask db migrate -m "Initial migration."<br />
 Apply the Migration to the Database:
 
-bash
-Copy code
-flask db upgrade
+<br />
+flask db upgrade<br />
 These commands create the necessary database files and tables.
 
 8. Run the Application
 Now you're ready to start EPStudio!
-
-bash
-Copy code
-python app.py
+<br />
+flask run<br />
 If everything is set up correctly, you should see output indicating that the server is running, like:
 
 markdown
