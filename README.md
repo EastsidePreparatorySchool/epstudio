@@ -180,14 +180,20 @@ Initialize the Database Migrations:
 
 <br />
 flask db init<br />
+<br />
+<br />
 Create the Migration Script:
 <br />
 
 flask db migrate -m "Initial migration."<br />
+<br />
+<br />
 Apply the Migration to the Database:
 
 <br />
 flask db upgrade<br />
+<br />
+<br />
 These commands create the necessary database files and tables.
 
 8. Run the Application
