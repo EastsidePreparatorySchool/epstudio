@@ -122,21 +122,24 @@ Follow these steps to set up and run EPStudio on your computer.
 
 Now, you'll download the EPStudio project code to your computer.
 
-1. **Open a Terminal or Command Prompt**:
+1. **Open Git Bash and clone**:
 
-   - **Windows**: Search for "Command Prompt" or "PowerShell" and open it.
-   - **macOS/Linux**: Open the "Terminal" application.
+   - Create a folder where you want EPStudio to be installed
+   - Open that folder in Git Bash (select folder, right click, more options, Open Git Bash Here)
+   - git clone https://github.com/EastsidePreparatorySchool/epstudio
+2. **Open the Folder in VS Code**:
 
-2. **Navigate to the Directory Where You Want to Store the Project**:
+   - Open VS Code
+   - Open Folder
+   - Select the "epstudio" folder that contains all the files just cloned down from git
+  
+3. **Git Commands in VS Code**:
+   - In the Source Control Area in VS Code, you can click the 3 dots to choose push, pull, or fetch
+   - Unless you have changes to push, you'll generally want to fetch
 
-   ```bash
-   cd /path/to/your/projects/directory
-Replace /path/to/your/projects/directory with the actual path.
 
 Clone the Repository:
 
-bash
-Copy code
 git clone https://github.com/yourusername/EPStudio.git
 cd EPStudio
 This will download the project files into a folder named EPStudio and navigate into it.
