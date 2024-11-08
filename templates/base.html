@@ -10,7 +10,9 @@
 <body>
     <nav>
         <div class="container">
-            <a href="{{ url_for('index') }}" class="brand">EPStudio</a>
+            <!-- <a href="{{ url_for('index') }}" class="brand">EPStudio</a> -->
+            <a href="{{ url_for('index') }}" class="icon-nav"><img src="/static/home.png" height="75px"></a>
+            <a href="{{ url_for('index') }}" style="text-align: left;"><img src="/static/filter.png" height="75px"></a>
             <ul>
                 <li><a href="{{ url_for('index') }}">Home</a></li>
                 <li><a href="{{ url_for('list_users') }}">Users</a></li>
