@@ -144,26 +144,28 @@
 <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button> -->
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+    <div class="modal-dialog modal-dialog-custom">
+        <div class="modal-content" style="border-radius: 37px; border: dashed 3px #545454;">
+            <!-- <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Upload </h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div> -->
+        <div class="modal-body" style="margin-top: 2%;"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="margin-left: 95%;"></button></div>
+        <div class="modal-body" style="margin-bottom: 15%;margin-top: 7%;">
+            <img src="/static/upload_pic.png" alt="..." href="#" style="width: 60%;" class="center-image">
+            <p style="text-align: center;">Choose a file or drag <br>and drop it here</p>
+            <button type="button" class="btn-primary" style="border: solid; border-radius: 15px; border-color: #002B61; background-color: white; margin-left: 42%;">Use Webcam</button>  
+        
         </div>
-        <div class="modal-body">
-            <img src="/static/upload_pic.png" alt="..." href="#">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+        <!-- <div class="modal-body">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+ 
       </div>
     </div>
   </div>
   
-  <div class="card" style="width: 27rem; border: none; padding-top: 15px; padding-left: 15px;">
-    <img src="/static/add_to_gal.png" class="card-img-top gal-img" alt="..." href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  </div>
 
 
 {% endblock %}

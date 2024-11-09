@@ -17,9 +17,9 @@
             <i class="fa-solid fa-filter"></i> <!--filter icon, doesn't do anything-->
             <i class="fa-solid fa-film"></i> <!--gallery icon-->
         </div>
-        <input type="text" class="search-bar" placeholder="Search">
+        <input type="text" class="search-bar" placeholder="Search" style="color: black;">
         <div class="nav-icons">
-            <i class="fa-solid fa-plus"></i>
+            <i class="fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
             <i class="fa-solid fa-user"></i>
         </div>
     </nav>
@@ -27,7 +27,7 @@
     <!-- old nav bar
     <nav>
         <div class="container">
-            <!-- <a href="{{ url_for('index') }}" class="brand">EPStudio</a> -->
+            <a href="{{ url_for('index') }}" class="brand">EPStudio</a>
             <a href="{{ url_for('index') }}" class="icon-nav"><img src="/static/home.png" height="75px"></a>
             <a href="{{ url_for('index') }}" style="text-align: left;"><img src="/static/filter.png" height="75px"></a>
             <ul>
