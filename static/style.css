@@ -214,3 +214,15 @@ a.button:hover {
   .toggle-checkbox:checked + label .new-text {
     display: inline;
   }
+
+.hidden {
+    /* display: none !important; */
+    opacity: 0% !important;
+    display: none !important;
+
+}
+.view-show {
+    /* display: block !important; */
+    opacity: 100% !important;
+    display: block !important;
+}
