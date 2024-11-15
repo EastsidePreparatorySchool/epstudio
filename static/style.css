@@ -156,9 +156,9 @@ a.button:hover {
 .star-icon {
     opacity: 0; 
     position: absolute; 
-    top: 10px; 
+    top: -5px; 
     right: 10px; 
-    font-size: 2em; 
+    font-size: 2.5em; 
     color: #f1c40f; 
     transition: opacity 0.5s ease;
     font-style: normal;
