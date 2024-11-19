@@ -15,16 +15,25 @@ function ImgUpload() {
             let nextPage = document.getElementById("exampleModal");
             let openPage = document.getElementById("afterUploadModal");
 
-            nextPage.innerHTML = "style='display: none !important;'"
+            nextPage.innerHTML = ""
             // openPage.innerHTML = "style='display: block; opacity: 100%;'"
             exampleModal.hide();
 
             afterUploadModal.show();
-
+            // ResetModal();
+            var loadFile = function(event) {
+                var image = document.getElementById('blah');
+                image.src = URL.createObjectURL(event.target.files[0]);
+            };
 
         
         }
     };
+}
+
+function ResetModal() {
+    const exampleModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+    exampleModal.show();
 }
 
 function PullModal(){
