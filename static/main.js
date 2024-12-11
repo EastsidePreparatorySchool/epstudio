@@ -20,16 +20,20 @@ function ImgUpload() {
             exampleModal.hide();
 
             afterUploadModal.show();
-            // ResetModal();
-            var loadFile = function(event) {
-                var image = document.getElementById('blah');
-                image.src = URL.createObjectURL(event.target.files[0]);
-            };
+            //v1 of showing the image
+                // ResetModal();
+                //var loadFile = function(event) {
+                //    var image = document.getElementById('blah');
+                //    image.src = URL.createObjectURL(event.target.files[0]);
+                //};
+            
+            //v2 of showing the image
+                const image = document.getElementById('blah');
+                image.src = URL.createObjectURL(files[0]);
+        }         
+    }
+};
 
-        
-        }
-    };
-}
 
 function ResetModal() {
     const exampleModal = new bootstrap.Modal(document.getElementById('exampleModal'));
