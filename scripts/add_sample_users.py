@@ -33,3 +33,17 @@ creation1 = Creation(
 )
 db.session.add(creation1)
 db.session.commit()
+
+# how to add new creation
+#flask shell
+# copy imports (ctrl + shift + v)
+# run following lines in
+user = User.query.filter_by(email="john.doe@example.com").first()
+
+creation2 = Creation(
+    name='My First Creation',
+    caption='This is my first creation.',
+    user=user
+)
+db.session.add(creation2)
+db.session.commit()

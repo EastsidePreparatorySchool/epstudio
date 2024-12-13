@@ -25,10 +25,27 @@
         {% endfor %}
     </ul>
 </div> -->
+<p>Number of creations: {{ recent_creations|length }}</p>
 
 <div class="container-fluid">
-    <div class="row justify-content-center g-10">
-        <!-- First Row of Cards -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for creation in recent_creations %}
+            <div class="col">
+                <div class="card img-container">
+                    <img src="/static/example.png" class="card-img-top gal-img" alt="...">
+                    <div class="card-body">
+                        <p class="star-icon">☆</p> 
+                        <p class="card-text">Creation Name</p>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+    <!-- <div class="row justify-content-center g-10">
         <div class="col-md-auto">
             <div class="card img-container" style="width: 25rem;">
                 
@@ -64,7 +81,6 @@
         </div>
     </div>
 
-    <!-- Second Row of Cards -->
     <div class="row justify-content-center g-10 mt-3">
         <div class="col-md-auto">
             <div class="card img-container" style="width: 25rem;">
@@ -101,7 +117,6 @@
         </div>
     </div>
 
-    <!-- Third Row of Cards -->
     <div class="row justify-content-center g-10 mt-3">
         <div class="col-md-auto">
             <div class="card img-container" style="width: 25rem;">
@@ -137,7 +152,7 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 
 <!-- Button and Modal -->
