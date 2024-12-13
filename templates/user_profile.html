@@ -7,6 +7,9 @@
 <p>Email: {{ user.email }}</p>
 <p>Graduation Year: {{ user.gradyear }}</p>
 <p>Pronouns: {{ user.pronouns }}</p>
+<p>Bio:</p>
+<input type="text">
+<p></p>
 
 <h2>Creations</h2>
 {% if user.creations %}
@@ -23,6 +26,7 @@
 {% endif %}
 
 {% if current_user.id == user.id or current_user.is_admin %}
-<a href="{{ url_for('add_creation', user_id=user.id) }}">Add Creation</a>
+<!--not sure if we're ever gonna be using add_creation.html or if we'll stick to just the modal Cameron made
+<a href="{{ url_for('add_creation', user_id=user.id) }}">Add Creation</a>-->
 {% endif %}
 {% endblock %}
