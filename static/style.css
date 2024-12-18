@@ -156,11 +156,12 @@ a.button:hover {
 .star-icon {
     opacity: 0; 
     position: absolute; 
-    top: 10px; 
+    top: -5px; 
     right: 10px; 
-    font-size: 2em; 
+    font-size: 2.5em; 
     color: #f1c40f; 
     transition: opacity 0.5s ease;
+    font-style: normal;
 }
 
 
@@ -183,4 +184,45 @@ a.button:hover {
     height: auto !important;
     max-width: 800px !important;
     padding-top: 100px;
+}
+
+
+.toggle-checkbox {
+    display: none;
+  }
+
+  
+  .toggle-icon {
+    cursor: pointer;
+    font-style: normal; 
+  }
+
+  
+  .toggle-checkbox:not(:checked) + label .original-text {
+    display: inline;
+  }
+
+  
+  .toggle-checkbox:not(:checked) + label .new-text {
+    display: none;
+  }
+
+  
+  .toggle-checkbox:checked + label .original-text {
+    display: none;
+  }
+  .toggle-checkbox:checked + label .new-text {
+    display: inline;
+  }
+
+.hidden {
+    /* display: none !important; */
+    opacity: 0% !important;
+    display: none !important;
+
+}
+.view-show {
+    /* display: block !important; */
+    opacity: 100% !important;
+    display: block !important;
 }
