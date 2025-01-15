@@ -1,1 +1,32 @@
-to do - implement a gallery page
+{% extends "base.html" %}
+
+{% block title %}Gallery - EPStudio{% endblock %}
+
+{% block content %}
+<div id="gallery_carousel" class="carousel slide" data-bs-ride="carousel">
+    <!-- Carousel Items -->
+    <div class="carousel-inner">
+        {% for creation in recent_creations %}
+            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                <img src="{{ creation.photo_path or '/static/example.png' }}" 
+                     class="d-block w-100" 
+                     alt="{{ creation.name }}">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>{{ creation.name }}</h5>
+                    <p>{{ creation.caption }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#gallery_carousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#gallery_carousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+{% endblock %}

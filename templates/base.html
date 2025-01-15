@@ -17,7 +17,9 @@
                 <i class="fa-solid fa-house"></i> <!--home icon-->
             </a>
             <i class="fa-solid fa-filter"></i> <!--filter icon, doesn't do anything-->
-            <i class="fa-solid fa-film"></i> <!--gallery icon-->
+            <a href="{{ url_for('gallery') }}" class="brand">
+                <i class="fa-solid fa-film"></i> <!--gallery icon-->
+            </a>
         </div>
         <input type="text" class="search-bar" placeholder="Search" style="color: black;">
         <div class="nav-icons">

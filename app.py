@@ -5,6 +5,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from flask_oidc import OpenIDConnect  # For OpenID Connect authentication
 from flask_migrate import Migrate  # For database migrations
 import os  # For operating system functionalities
+from flask import jsonify # For API responses
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -42,6 +43,8 @@ else:
 
 # Import models after initializing db to avoid circular imports
 from models import User, Creation
+
+app.jinja_env.globals.update(enumerate=enumerate)
 
 # Define the user loader callback for Flask-Login
 # This function retrieves a user by ID from the database
@@ -171,3 +174,30 @@ def logout():
 if __name__ == '__main__':
     # Start the Flask development server with debugging enabled
     app.run(debug=True)
+
+
+# Define the slideshow route
+@app.route('/api/slideshow')
+def slideshow():
+    """
+    Provide a JSON API endpoint to fetch image data for the slideshow.
+    """
+    # Query all creations with photo paths from the database
+    creations = Creation.query.filter(Creation.photo_path != None).all()
+    
+    # Prepare data in JSON format
+    slideshow_data = [{'id': creation.id, 'name': creation.name, 'photo_path': creation.photo_path} for creation in creations]
+    
+    # Return the data as JSON
+    return jsonify(slideshow_data)
+
+@app.route('/gallery')
+def gallery():
+    """
+    Render the gallery page with all creations having a photo path.
+    """
+    # Query all creations with a valid photo path from the database
+    creations = Creation.query.filter(Creation.photo_path != None).all()
+    print(creations)  # Debugging: Print to console
+    # Render the 'gallery.html' template with the list of creations
+    return render_template('gallery.html', creations=creations)
