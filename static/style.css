@@ -226,3 +226,21 @@ a.button:hover {
     opacity: 100% !important;
     display: block !important;
 }
+
+.carousel-item {
+    height: 500px;
+}
+
+.carousel-item img {
+    object-fit: cover;
+    height: 100%;
+}
+
+.carousel-caption h5 {
+    font-size: 24px;
+    color: #fff;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5); /* Make the icons stand out */
+}

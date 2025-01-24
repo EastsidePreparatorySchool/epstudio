@@ -197,7 +197,8 @@ def gallery():
     Render the gallery page with all creations having a photo path.
     """
     # Query all creations with a valid photo path from the database
-    creations = Creation.query.filter(Creation.photo_path != None).all()
+    #creations = Creation.query.filter(Creation.photo_path != None).all()
+    creations = Creation.query.all()
     print(creations)  # Debugging: Print to console
     # Render the 'gallery.html' template with the list of creations
     return render_template('gallery.html', creations=creations)
