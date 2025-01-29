@@ -77,6 +77,7 @@ def index():
     # Render the 'index.html' template with the recent creations
     return render_template('index.html', recent_creations=recent_creations)
 
+
 # Route to list all users
 @app.route('/users')
 @login_required  # Require the user to be logged in to access this page
