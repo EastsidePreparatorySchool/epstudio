@@ -3,14 +3,28 @@
 {% block title %}Gallery - EPStudio{% endblock %}
 
 {% block content %}
+<!--
 <div id="gallery_carousel" class="carousel slide" data-bs-ride="carousel">
-    <!-- Carousel Items -->
+    Carousel Items
     <div class="carousel-inner">
         {% for creation in recent_creations %}
             <div class="carousel-item {% if loop.first %}active{% endif %}">
                 <img src="{{ creation.photo_path or '/static/example.png' }}" 
                      class="d-block w-100" 
                      alt="{{ creation.name }}">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>{{ creation.name }}</h5>
+                    <p>{{ creation.caption }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+-->
+<div id="gallery_carousel" class="carousel slide" data-bs-ride="carousel" style="border: 1px solid black;">
+    <div class="carousel-inner">
+        {% for creation in recent_creations %}
+            <div class="carousel-item active" style="background-color: lightgray;">
+                <img src="{{ creation.photo_path or '/static/example.png' }}" class="d-block w-100" style="height: 100%; object-fit: cover;" alt="Example Image">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>{{ creation.name }}</h5>
                     <p>{{ creation.caption }}</p>
