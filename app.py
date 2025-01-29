@@ -6,6 +6,13 @@ from flask_oidc import OpenIDConnect  # For OpenID Connect authentication
 from flask_migrate import Migrate  # For database migrations
 import os  # For operating system functionalities
 from flask import jsonify # For API responses
+import identity
+import identity.web
+import requests
+from flask import Flask, redirect, render_template, request, session, url_for
+from flask_session import Session
+
+import app_config
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -16,6 +23,9 @@ app.config['SECRET_KEY'] = 'your-secret-key'
 # Database configuration
 # Here we are using SQLite as our database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///epstudio.db'
+
+app.config.from_object(app_config)
+Session(app)
 
 # Initialize the SQLAlchemy object with the Flask app
 db = SQLAlchemy(app)
@@ -138,10 +148,21 @@ def add_creation(user_id):
     return render_template('add_creation.html', user=user)
 
 # Login route
+from werkzeug.middleware.proxy_fix import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
+auth = identity.web.Auth(
+    session=session,
+    authority=app.config.get("AUTHORITY"),
+    client_id=app.config["CLIENT_ID"],
+    client_credential=app.config["CLIENT_SECRET"],
+)
+
 @app.route('/login')
 def login():
     """
     Handle user login.
+    """
     """
     if oidc:
         # In production, redirect to the OpenID Connect authentication server
@@ -157,6 +178,32 @@ def login():
         else:
             # If no users exist, prompt to create a user
             return 'No users exist in the database. Please create a user.'
+    """
+    return render_template("login.html", version=identity.__version__, **auth.log_in(
+        scopes=app_config.SCOPE, # Have user consent to scopes during log-in
+        redirect_uri=url_for("auth_response", _external=True), # Optional. If present, this absolute URL must match your app's redirect_uri registered in Azure Portal
+        ))
+
+@app.route(app_config.REDIRECT_PATH)
+def auth_response():
+    result = auth.complete_log_in(request.args)
+    if "error" in result:
+        return render_template("auth_error.html", result=result)
+    return redirect(url_for("index"))
+
+@app.route("/call_downstream_api")
+def call_downstream_api():
+    token = auth.get_token_for_user(app_config.SCOPE)
+    if "error" in token:
+        return redirect(url_for("login"))
+    # Use access token to call downstream api
+    api_result = requests.get(
+        app_config.ENDPOINT,
+        headers={'Authorization': 'Bearer ' + token['access_token']},
+        timeout=30,
+    ).json()
+    return render_template('display.html', result=api_result)
+
 
 # Logout route
 @app.route('/logout')
@@ -165,10 +212,11 @@ def logout():
     """
     Handle user logout.
     """
-    # Log out the current user
-    logout_user()
-    # Redirect to the login page
-    return redirect(url_for('login'))
+    # # Log out the current user
+    # logout_user()
+    # # Redirect to the login page
+    # return redirect(url_for('login'))
+    return redirect(auth.log_out(url_for("index", _external=True)))
 
 # Run the application only if this script is executed directly
 if __name__ == '__main__':

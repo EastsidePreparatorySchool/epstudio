@@ -27,8 +27,10 @@
             <i class="fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
             </a>
             <!--current_user.id is a placeholder, it is also an old page right now so we should probably update it, it uses original template-->
-            <a href="{{ url_for('user_profile', user_id=1) }}">
-            <i class="fa-solid fa-user"></i>
+            <a href="{{ url_for('user_profile', user_id=4) }}">
+            <a href="{{ url_for('login') }}" class="brand">
+                <i class="fa-solid fa-user"></i>
+            </a>
             </a>
         </div>
     </nav>
