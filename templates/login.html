@@ -1,1 +1,18 @@
-to do - implement a login page
+{% extends "base.html" %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+<h1>Log In With Eastside Prep Email</h1>
+<form method="post">
+    <div>
+        <label for="name">Email:</label>
+        <input type="text" name="name" id="name" required>
+    </div>
+    <div>
+        <label for="name">Password:</label>
+        <input type="text" name="name" id="name" required>
+    </div>
+    <button type="submit">Login</button>
+</form>
+{% endblock %}
