@@ -244,3 +244,15 @@ a.button:hover {
 .carousel-control-prev-icon, .carousel-control-next-icon {
     background-color: rgba(0, 0, 0, 0.5); /* Make the icons stand out */
 }
+
+.loginPopup {
+    background-color: white;
+    align-items: center;
+    text-align:center;
+    width:50%;
+    height:375px;
+    margin:0 auto;
+    padding:50px;
+    margin-top:50px;
+    list-style-type:none;
+}
