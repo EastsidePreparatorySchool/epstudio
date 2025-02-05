@@ -1,35 +1,27 @@
 # Import necessary modules from Flask and other libraries
-from flask import Flask, render_template, redirect, url_for, request, flash
-from flask_sqlalchemy import SQLAlchemy  # For database operations
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_oidc import OpenIDConnect  # For OpenID Connect authentication
-from flask_migrate import Migrate  # For database migrations
-import os  # For operating system functionalities
-from flask import jsonify # For API responses
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, session
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
+from flask_oidc import OpenIDConnect
+from flask_migrate import Migrate
+import os
 import identity
 import identity.web
 import requests
-from flask import Flask, redirect, render_template, request, session, url_for
 from flask_session import Session
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 import app_config
 
 # Initialize the Flask application
 app = Flask(__name__)
-
-# Set the secret key for session management and security purposes
-app.config['SECRET_KEY'] = 'your-secret-key'
-
-# Database configuration
-# Here we are using SQLite as our database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///epstudio.db'
-
+app.config['SECRET_KEY'] = 'your-secret-key' # secret key: session management/security
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///epstudio.db' # database config
 app.config.from_object(app_config)
 Session(app)
 
 # Initialize the SQLAlchemy object with the Flask app
 db = SQLAlchemy(app)
-
 # Initialize Flask-Migrate for handling database migrations
 migrate = Migrate(app, db)
 
@@ -53,7 +45,6 @@ else:
 
 # Import models after initializing db to avoid circular imports
 from models import User, Creation
-
 app.jinja_env.globals.update(enumerate=enumerate)
 
 # Define the user loader callback for Flask-Login
@@ -62,6 +53,8 @@ app.jinja_env.globals.update(enumerate=enumerate)
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
+
 # ======================
 #       ROUTES
 # ======================
@@ -69,12 +62,7 @@ def load_user(user_id):
 # Home page route
 @app.route('/')
 def index():
-    """
-    Render the home page with the 5 most recent creations.
-    """
-    # Query the 5 most recent creations, ordered by creation date descending
-    recent_creations = Creation.query.order_by(Creation.creation_date.desc()).limit(5).all()
-    # Render the 'index.html' template with the recent creations
+    recent_creations = Creation.query.order_by(Creation.creation_date.desc()).limit(5).all() # Query  5 most recent creations, descending creation date
     return render_template('index.html', recent_creations=recent_creations)
 
 
@@ -82,33 +70,24 @@ def index():
 @app.route('/users')
 @login_required  # Require the user to be logged in to access this page
 def list_users():
-    """
-    Display a list of all users.
-    """
-    # Retrieve all user records from the database
-    users = User.query.all()
-    # Render the 'users.html' template with the list of users
-    return render_template('users.html', users=users)
+    users = User.query.all() # Retrieve all user records from the database
+    return render_template('users.html', users=users) # render template, user lsit
+
 
 # Route to show a user's profile
 @app.route('/user/<int:user_id>')
 @login_required
 def user_profile(user_id):
-    """
-    Display the profile of a specific user.
-    """
     # Retrieve the user by ID or return a 404 error if not found
     user = User.query.get_or_404(user_id)
     # Render the 'user_profile.html' template with the user object
     return render_template('user_profile.html', user=user)
 
+
 # Route to add a creation for a user
 @app.route('/user/<int:user_id>/add_creation', methods=['GET', 'POST'])
 @login_required
 def add_creation(user_id):
-    """
-    Allow a user to add a new creation to their profile.
-    """
     # Check if the current user is the owner of the profile or an admin
     if current_user.id != user_id and not current_user.is_admin:
         # Flash an error message if the user doesn't have permission
@@ -147,6 +126,7 @@ def add_creation(user_id):
 
     # If the request method is GET, render the 'add_creation.html' template
     return render_template('add_creation.html', user=user)
+
 
 # Login route
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -192,6 +172,7 @@ def auth_response():
         return render_template("auth_error.html", result=result)
     return redirect(url_for("index"))
 
+
 @app.route("/call_downstream_api")
 def call_downstream_api():
     token = auth.get_token_for_user(app_config.SCOPE)
@@ -210,13 +191,7 @@ def call_downstream_api():
 @app.route('/logout')
 @login_required
 def logout():
-    """
-    Handle user logout.
-    """
-    # # Log out the current user
-    # logout_user()
-    # # Redirect to the login page
-    # return redirect(url_for('login'))
+    logout_user()
     return redirect(auth.log_out(url_for("index", _external=True)))
 
 # Run the application only if this script is executed directly
@@ -239,6 +214,7 @@ def slideshow():
     
     # Return the data as JSON
     return jsonify(slideshow_data)
+
 
 @app.route('/gallery')
 def gallery():
