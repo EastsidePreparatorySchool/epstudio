@@ -202,7 +202,7 @@ These commands create the necessary database files and tables.
 8. Run the Application
 Now you're ready to start EPStudio!
 <br />
-flask run<br />
+flask run (or now, flask run --host=localhost --port=5000)<br />
 If everything is set up correctly, you should see output indicating that the server is running, like:
 
 markdown
