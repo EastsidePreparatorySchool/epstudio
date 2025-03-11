@@ -10,11 +10,13 @@
     <script src="/static/main.js"></script>
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
 </head>
-<body style="background-color:blue; align-items:center">
+<!--this stuff wont center for some reason-->
+<body style="background-color:#2648A3; align-items:center">
     <div class = "loginPopup">
+        <img src="{{'/static/epslogo.png'}}" alt="EPS Logo">
         <h1>EPStudio</h1>
-        <!--This won't load for some reason??-->
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="EPS Logo">
+        <br>
+        <p>An Eastside Prep student gallery system.</p>
         {% if user_code %}
         <ol>
         <li>To sign in, type <b>{{ user_code }}</b> into
@@ -24,7 +26,7 @@
         <li>And then <a href="{{ url_for('auth_response') }}">proceed</a>.</li>
         </ol>
         {% else %}
-        <ul><a href='{{ auth_uri }}'>Sign In</a></ul>
+        <ul><a href='{{ auth_uri }}' class="btn btn-primary">Sign In</a></ul>
         {% endif %}
     </div>
 </body>
