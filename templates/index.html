@@ -36,8 +36,8 @@
                          class="card-img-top gal-img" 
                          alt="{{ creation.name }}">
                     <div class="card-body">
-                        <input type="checkbox" class="toggle-checkbox" id="toggle1">
-                        <label for="toggle1">
+                        <input type="checkbox" class="toggle-checkbox" id="toggle{{ loop.index }}">
+                        <label for="toggle{{ loop.index }}">
                         <i class="star-icon toggle-icon">
                             <span class="original-text">☆</span>
                             <span class="new-text">★</span>
