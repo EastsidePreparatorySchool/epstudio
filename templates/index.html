@@ -3,30 +3,10 @@
 {% block title %}Home - EPStudio{% endblock %}
 
 {% block content %}
-<!-- <div class="index-hero">
-    <h1>Welcome to EPStudio</h1>
-    <p>Your platform to showcase and explore student creations.</p>
-    <a href="{{ url_for('list_users') }}" class="button">Explore Users</a>
-    {% if current_user.is_authenticated %}
-        <a href="{{ url_for('user_profile', user_id=current_user.id) }}" class="button">View My Profile</a>
-    {% else %}
-        Please Login
-    {% endif %}
-</div>
 
-<div class="recent-creations">
-    <h2>Recent Creations</h2>
-    <ul>
-        {% for creation in recent_creations %}
-        <li>
-            <strong>{{ creation.name }}</strong> by {{ creation.user.first_name }} {{ creation.user.last_name }}
-            <p>{{ creation.caption }}</p>
-        </li>
-        {% endfor %}
-    </ul>
-</div> -->
 <p>Number of creations: {{ recent_creations|length }}</p>
 
+<!-- CREATIONS -->
 <div class="container-fluid">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         {% for creation in recent_creations %}
@@ -34,7 +14,8 @@
                 <div class="card img-container">
                     <img src="{{ creation.photo_path or '/static/example.png' }}" 
                          class="card-img-top gal-img" 
-                         alt="{{ creation.name }}">
+                         alt="{{ creation.name }}" 
+                         data-id="{{ creation.id }}">                    
                     <div class="card-body">
                         <input type="checkbox" class="toggle-checkbox" id="toggle1">
                         <label for="toggle1">
@@ -43,7 +24,7 @@
                             <span class="new-text">★</span>
                         </i>
                         </label>
-                        <p class="card-text">{{ creation.name }}</p>
+                        <b class="card-text">{{ creation.name }}</b>
                         <p class="card-text">{{ creation.caption }}</p>
                     </div>
                 </div>
@@ -54,7 +35,7 @@
 
 <!-- Button and Modal -->
 <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button> -->
-
+<!-- UPLOAD IMAGE -->
 <div class="modal fade target1" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-custom">
         <div class="modal-content" style="border-radius: 37px; border: dashed 4px #545454;">
@@ -69,17 +50,16 @@
                         <input type="file" class="form-control" id="fileInput" name="file" required>
                     </div>
                     <div class="mb-3">
+                        <label for="titleInput" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="titleInput" name="title">
+                    </div>
+                    <div class="mb-3">
                         <label for="captionInput" class="form-label">Caption</label>
                         <input type="text" class="form-control" id="captionInput" name="caption">
                     </div>
                     <button type="submit" class="btn btn-primary">Upload</button>
                 </form>                
             </div>
-        <!-- <div class="modal-body">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-        </div> -->
- 
       </div>
     </div>
   </div>

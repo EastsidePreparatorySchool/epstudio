@@ -11,7 +11,6 @@ import requests
 from flask_session import Session
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.utils import secure_filename
-from app import app, db
 
 import app_config
 
@@ -65,6 +64,7 @@ def load_user(user_id):
 @app.route('/')
 def index():
     recent_creations = Creation.query.order_by(Creation.creation_date.desc()).limit(5).all() # Query  5 most recent creations, descending creation date
+    print(f"User authenticated: {current_user.is_authenticated}")
     return render_template('index.html', recent_creations=recent_creations)
 
 
@@ -73,7 +73,13 @@ def index():
 @login_required  # Require the user to be logged in to access this page
 def list_users():
     users = User.query.all() # Retrieve all user records from the database
-    return render_template('users.html', users=users) # render template, user lsit
+    return render_template('users.html', users=users) # render template, user list
+
+# full screen image route
+@app.route("/creation/<int:creation_id>")
+def show_creation(creation_id):
+    creation = Creation.query.get_or_404(creation_id)  # Fetch creation from database
+    return render_template("full_screen_creation.html", creation=creation)
 
 
 # Route to show a user's profile
@@ -128,6 +134,56 @@ def auth_response():
     if "error" in result:
         return render_template("auth_error.html", result=result)
     return redirect(url_for("index"))
+
+# @app.route(app_config.REDIRECT_PATH)
+# def auth_response():
+#     result = auth.complete_log_in(request.args)
+    
+#     if "error" in result:
+#         return render_template("auth_error.html", result=result)
+
+#     # Get the user info from Azure AD
+#     user_info = auth.get_user()  # Ensure this function correctly fetches user details
+#     print(f"User info from Azure AD: {user_info}")  # Debugging
+
+#     # Check if we got valid user info
+#     if not user_info or "preferred_username" not in user_info:
+#         return "Error: Could not retrieve user info from Azure AD.", 400
+
+#     user_email = user_info["preferred_username"]
+#     print(f"Looking up user with email: {user_email}")  # Debugging
+
+#     # Retrieve user from your database
+#     user = User.query.filter_by(email=user_email).first()
+#     print(f"User retrieved from DB: {user}")  # Debugging
+
+#     if not user:
+#         return "Error: User not found in database. Please contact an admin.", 403
+
+#     # Log in the user with Flask-Login
+#     login_user(user)
+#     print(f"User {user.email} successfully logged in!")  # Debugging
+
+#     return redirect(url_for("index"))
+
+# @app.route(app_config.REDIRECT_PATH)
+# def auth_response():
+#     result = auth.complete_log_in(request.args)
+    
+#     if "error" in result:
+#         return render_template("auth_error.html", result=result)
+
+#     # Get the user info from Azure AD
+#     user_info = auth.get_user()  # Ensure this function exists and works
+
+#     # Retrieve user from your database
+#     user = User.query.filter_by(email=user_info["preferred_username"]).first()
+
+#     # Log in the user with Flask-Login
+#     login_user(user)
+
+#     # Redirect to home page
+#     return redirect(url_for("index"))
 
 
 @app.route("/call_downstream_api")
@@ -185,50 +241,6 @@ def gallery():
     # Render the 'gallery.html' template with the list of creations
     return render_template('gallery.html', creations=creations)
 
-
-# Route to add a creation for a user
-# @app.route('/user/<int:user_id>/add_creation', methods=['GET', 'POST'])
-# @login_required
-# def add_creation(user_id):
-#     # Check if the current user is the owner of the profile or an admin
-#     if current_user.id != user_id and not current_user.is_admin:
-#         # Flash an error message if the user doesn't have permission
-#         flash("You don't have permission to add a creation for this user.", 'danger')
-#         # Redirect to the home page
-#         return redirect(url_for('index'))
-
-#     # Retrieve the user by ID or return a 404 error if not found
-#     user = User.query.get_or_404(user_id)
-
-#     # Check if the form was submitted via POST request
-#     if request.method == 'POST':
-#         # Get form data from the request object
-#         name = request.form.get('name')
-#         caption = request.form.get('caption')
-#         # In a real application, you should handle file uploads securely
-#         photo_path = request.form.get('photo_path')
-#         video_path = request.form.get('video_path')
-
-#         # Create a new Creation object with the form data
-#         new_creation = Creation(
-#             name=name,
-#             caption=caption,
-#             photo_path=photo_path,
-#             video_path=video_path,
-#             user=user  # Associate the creation with the user
-#         )
-#         # Add the new creation to the database session
-#         db.session.add(new_creation)
-#         # Commit the session to save the creation in the database
-#         db.session.commit()
-#         # Flash a success message to the user
-#         flash('Creation added successfully!', 'success')
-#         # Redirect to the user's profile page
-#         return redirect(url_for('user_profile', user_id=user.id))
-
-#     # If the request method is GET, render the 'add_creation.html' template
-#     return render_template('add_creation.html', user=user)
-
 # Set the folder to store uploaded files
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -237,6 +249,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/upload_creation', methods=['POST'])
+@login_required
 def upload_creation():
     if 'file' not in request.files:
         flash('No file part')
@@ -244,6 +257,7 @@ def upload_creation():
     
     file = request.files['file']
     caption = request.form.get('caption', '')
+    title = request.form.get('title','')
 
     if file.filename == '':
         flash('No selected file')
@@ -256,13 +270,12 @@ def upload_creation():
 
         # Add to database
         new_creation = Creation(
-            name=filename,  
-            student_id=1,  # Replace with current user ID (use Flask-Login for actual user)
+            name=title,  
+            student_id=current_user.id,  # Replace with current user ID (use Flask-Login for actual user)
             photo_path=file_path,
             caption=caption
         )
         db.session.add(new_creation)
         db.session.commit()
 
-        flash('File uploaded successfully!')
         return redirect(url_for('index'))  # Redirect back to index page

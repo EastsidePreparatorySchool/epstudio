@@ -46,3 +46,14 @@ function PullModal(){
     // nextPage.innerHTML = "style='display: block !important;'"
     exampleModal.show();
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".gal-img").forEach(img => {
+        img.addEventListener("dblclick", function () {
+            const creationId = this.dataset.id; // Ensure each image has a data-id attribute
+            if (creationId) {
+                window.location.href = `/creation/${creationId}`;
+            }
+        });
+    });
+});

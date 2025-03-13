@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}{{ creation.name }} - EPStudio{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <h2>{{ creation.name }}</h2>
+    <img src="{{ creation.photo_path }}" class="img-fluid" alt="{{ creation.name }}">
+    <p>{{ creation.caption }}</p>
+</div>
+{% endblock %}
