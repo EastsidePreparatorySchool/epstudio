@@ -14,27 +14,49 @@
     <nav class="navbar">
         <div class="nav-icons">
             <a href="{{ url_for('index') }}" class="brand">
-                <i class="fa-solid fa-house"></i> <!--home icon-->
+                <i class="fa-solid fa-house"></i> <!-- Home icon -->
             </a>
-            <i class="fa-solid fa-filter"></i> <!--filter icon, doesn't do anything-->
+            <i class="fa-solid fa-filter"></i> <!-- Filter icon -->
             <a href="{{ url_for('gallery') }}" class="brand">
-                <i class="fa-solid fa-film"></i> <!--gallery icon-->
+                <i class="fa-solid fa-film"></i> <!-- Gallery icon -->
             </a>
         </div>
-        <input type="text" class="search-bar" placeholder="Search" style="color: black;">
+    
+        <!-- Search Form -->
+        <form action="{{ url_for('search') }}" method="GET" class="search-form">
+            <input type="text" name="query" class="search-bar" placeholder="Search" style="color: black;">
+            <button type="submit" class="search-button">
+                <i class="fa-solid fa-search"></i> <!-- Search icon -->
+            </button>
+        </form>
+    
         <div class="nav-icons">
             <a onclick="PullModal()">
-            <i class="fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
+                <i class="fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
             </a>
-            <!--current_user.id is a placeholder, it is also an old page right now so we should probably update it, it uses original template-->
             <a href="{{ url_for('user_profile', user_id=4) }}">
-            <a href="{{ url_for('login') }}" class="brand">
-                <i class="fa-solid fa-user"></i>
-            </a>
+                <i class="fa-solid fa-user"></i> <!-- Profile icon -->
             </a>
         </div>
     </nav>
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.querySelector(".search-bar");
+            searchInput.addEventListener("keyup", function () {
+                let filter = searchInput.value.toLowerCase();
+                let cards = document.querySelectorAll(".card");
+        
+                cards.forEach(card => {
+                    let text = card.innerText.toLowerCase();
+                    if (filter === "" || text.includes(filter)) {
+                        card.style.display = "";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            });
+        });
+        </script>
     <!-- old nav bar
     <nav>
         <div class="container">

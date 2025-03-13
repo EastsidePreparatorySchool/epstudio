@@ -67,9 +67,9 @@ nav ul li a:hover {
 }
 
 .search-bar {
-    width: 30%;
+    width: 100%;
     border-radius: 25px; 
-    padding-left: 13px;
+    padding-left: 18px;
     font-size: 120%;
 }
 
@@ -255,4 +255,16 @@ a.button:hover {
     padding:50px;
     margin-top:50px;
     list-style-type:none;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+}
+
+
+.search-button {
+    background: none;
+    border: none;
+    cursor: pointer;
 }

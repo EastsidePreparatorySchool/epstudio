@@ -11,7 +11,7 @@ import requests
 from flask_session import Session
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.utils import secure_filename
-from app import app, db
+
 
 import app_config
 
@@ -266,3 +266,20 @@ def upload_creation():
 
         flash('File uploaded successfully!')
         return redirect(url_for('index'))  # Redirect back to index page
+    
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query', '').strip().lower()
+    
+    # Dummy data (Replace with database query)
+    recent_creations = [
+        {"name": "My First Creation", "caption": "This is my first creation.", "photo_path": "/static/example.png"},
+        {"name": "xmas_bunny_3.jpg", "caption": "test picture pls work", "photo_path": "/static/xmas_bunny_3.jpg"},
+    ]
+
+    if query:
+        filtered_creations = [c for c in recent_creations if query in c['name'].lower() or query in c['caption'].lower()]
+    else:
+        filtered_creations = recent_creations  # Show all if no query
+    
+    return render_template('gallery.html', recent_creations=filtered_creations)
