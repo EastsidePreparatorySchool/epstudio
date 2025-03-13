@@ -10,6 +10,8 @@ import identity.web
 import requests
 from flask_session import Session
 from werkzeug.middleware.proxy_fix import ProxyFix
+from werkzeug.utils import secure_filename
+from app import app, db
 
 import app_config
 
@@ -82,51 +84,6 @@ def user_profile(user_id):
     user = User.query.get_or_404(user_id)
     # Render the 'user_profile.html' template with the user object
     return render_template('user_profile.html', user=user)
-
-
-# Route to add a creation for a user
-@app.route('/user/<int:user_id>/add_creation', methods=['GET', 'POST'])
-@login_required
-def add_creation(user_id):
-    # Check if the current user is the owner of the profile or an admin
-    if current_user.id != user_id and not current_user.is_admin:
-        # Flash an error message if the user doesn't have permission
-        flash("You don't have permission to add a creation for this user.", 'danger')
-        # Redirect to the home page
-        return redirect(url_for('index'))
-
-    # Retrieve the user by ID or return a 404 error if not found
-    user = User.query.get_or_404(user_id)
-
-    # Check if the form was submitted via POST request
-    if request.method == 'POST':
-        # Get form data from the request object
-        name = request.form.get('name')
-        caption = request.form.get('caption')
-        # In a real application, you should handle file uploads securely
-        photo_path = request.form.get('photo_path')
-        video_path = request.form.get('video_path')
-
-        # Create a new Creation object with the form data
-        new_creation = Creation(
-            name=name,
-            caption=caption,
-            photo_path=photo_path,
-            video_path=video_path,
-            user=user  # Associate the creation with the user
-        )
-        # Add the new creation to the database session
-        db.session.add(new_creation)
-        # Commit the session to save the creation in the database
-        db.session.commit()
-        # Flash a success message to the user
-        flash('Creation added successfully!', 'success')
-        # Redirect to the user's profile page
-        return redirect(url_for('user_profile', user_id=user.id))
-
-    # If the request method is GET, render the 'add_creation.html' template
-    return render_template('add_creation.html', user=user)
-
 
 # Login route
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -227,3 +184,85 @@ def gallery():
     print(creations)  # Debugging: Print to console
     # Render the 'gallery.html' template with the list of creations
     return render_template('gallery.html', creations=creations)
+
+
+# Route to add a creation for a user
+# @app.route('/user/<int:user_id>/add_creation', methods=['GET', 'POST'])
+# @login_required
+# def add_creation(user_id):
+#     # Check if the current user is the owner of the profile or an admin
+#     if current_user.id != user_id and not current_user.is_admin:
+#         # Flash an error message if the user doesn't have permission
+#         flash("You don't have permission to add a creation for this user.", 'danger')
+#         # Redirect to the home page
+#         return redirect(url_for('index'))
+
+#     # Retrieve the user by ID or return a 404 error if not found
+#     user = User.query.get_or_404(user_id)
+
+#     # Check if the form was submitted via POST request
+#     if request.method == 'POST':
+#         # Get form data from the request object
+#         name = request.form.get('name')
+#         caption = request.form.get('caption')
+#         # In a real application, you should handle file uploads securely
+#         photo_path = request.form.get('photo_path')
+#         video_path = request.form.get('video_path')
+
+#         # Create a new Creation object with the form data
+#         new_creation = Creation(
+#             name=name,
+#             caption=caption,
+#             photo_path=photo_path,
+#             video_path=video_path,
+#             user=user  # Associate the creation with the user
+#         )
+#         # Add the new creation to the database session
+#         db.session.add(new_creation)
+#         # Commit the session to save the creation in the database
+#         db.session.commit()
+#         # Flash a success message to the user
+#         flash('Creation added successfully!', 'success')
+#         # Redirect to the user's profile page
+#         return redirect(url_for('user_profile', user_id=user.id))
+
+#     # If the request method is GET, render the 'add_creation.html' template
+#     return render_template('add_creation.html', user=user)
+
+# Set the folder to store uploaded files
+UPLOAD_FOLDER = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Ensure the folder exists
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+@app.route('/upload_creation', methods=['POST'])
+def upload_creation():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    
+    file = request.files['file']
+    caption = request.form.get('caption', '')
+
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+
+    if file:
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)  # Save the file
+
+        # Add to database
+        new_creation = Creation(
+            name=filename,  
+            student_id=1,  # Replace with current user ID (use Flask-Login for actual user)
+            photo_path=file_path,
+            caption=caption
+        )
+        db.session.add(new_creation)
+        db.session.commit()
+
+        flash('File uploaded successfully!')
+        return redirect(url_for('index'))  # Redirect back to index page

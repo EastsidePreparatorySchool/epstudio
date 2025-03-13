@@ -63,7 +63,7 @@
                 <button type="button" class="btn-close" onclick="closePopup()"></button>
             </div>
             <div class="modal-body" style="margin-bottom: 15%;margin-top: 7%;">
-                <form id="uploadForm">
+                <form id="uploadForm" action="{{ url_for('upload_creation') }}" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="fileInput" class="form-label">Choose Photo</label>
                         <input type="file" class="form-control" id="fileInput" name="file" required>
@@ -73,7 +73,7 @@
                         <input type="text" class="form-control" id="captionInput" name="caption">
                     </div>
                     <button type="submit" class="btn btn-primary">Upload</button>
-                </form>
+                </form>                
             </div>
         <!-- <div class="modal-body">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -83,36 +83,4 @@
       </div>
     </div>
   </div>
-  
-
-  <div class="modal fade target2" id="afterUploadModal" tabindex="-1" aria-labelledby="afterUploadModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-custom">
-        <div class="modal-content" style="border-radius: 37px; border: dashed 4px #545454;">
-            <div class="modal-header">
-                <h5 class="modal-title">Upload Finished!</h5>
-                <button type="button" class="btn-close" onclick="closePopup()"></button>
-            </div>
-        <div class="modal-body" style="margin-top: 2%;"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="margin-left: 95%;"></button></div>
-        <div class="modal-body" style="margin-bottom: 15%;margin-top: 7%;">
-            <!-- <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg"></input> -->
-            <!-- <button type="button" id="webcamButton" class="btn-primary" style="border: solid; border-radius: 5px; border-color: #002B61; background-color: white; margin-left: 42%; padding: 2%;"><i class="fa-solid fa-camera"></i>   Use Webcam</button>   -->
-            <img class="modular-img">
-            <form>
-                <!-- {image ? <img src={image} className="image" alt="preview" /> : null}        -->
-                         <!-- <input type="text" > -->
-                <img id="blah">
-            </form>
-        
-        </div>
-        <!-- <div class="modal-body">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-        </div> -->
- 
-      </div>
-    </div>
-  </div>
-  
-
-
 {% endblock %}
