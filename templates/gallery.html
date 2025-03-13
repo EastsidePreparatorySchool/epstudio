@@ -1,9 +1,4 @@
-{% extends "base.html" %}
-
-{% block title %}Gallery - EPStudio{% endblock %}
-
-{% block content %}
-<!--
+<!-- version 1 of doing it
 <div id="gallery_carousel" class="carousel slide" data-bs-ride="carousel">
     Carousel Items
     <div class="carousel-inner">
@@ -20,6 +15,8 @@
         {% endfor %}
     </div>
 -->
+
+<!-- version 2 of doing it
 <div id="gallery_carousel" class="carousel slide" data-bs-ride="carousel" style="border: 1px solid black;">
     <div class="carousel-inner">
         {% for creation in recent_creations %}
@@ -31,9 +28,9 @@
                 </div>
             </div>
         {% endfor %}
-    </div>
+    </div> -->
 
-    <!-- Controls -->
+    <!--Controls
     <button class="carousel-control-prev" type="button" data-bs-target="#gallery_carousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -43,4 +40,35 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-{% endblock %}
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="/static/main.js"></script>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+<!--this stuff wont center for some reason-->
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #000; overflow: hidden;">
+    <a href="{{ url_for('index') }}" class="brand">
+        <i class="fa-solid fa-house"></i> <!--home icon-->
+    </a>
+    <div class = "gallery">
+        <button class="arrow left" onclick="prevImage()">&#10094;</button>
+        <!-- not particularly sure how the whole "creation in creations" thing works
+        {% for creation in recent_creations %}
+            <img class="active" src="{{ creation.photo_path or '/static/example.png' }}" alt="Image 1">
+        {% endfor %}-->
+
+        <!--the "active" class is the image that gets shown first, but we'll need to rework it maybe for the database images unless it can work i'm not sure-->
+        <img class ="active" src = '/static/example.png' alt = "Image 1">
+        <img src = '/static/epslogo.png' alt = "Image 2">
+        <button class="arrow right" onclick="nextImage()">&#10095;</button>
+    </div>
+</body>
+</html>

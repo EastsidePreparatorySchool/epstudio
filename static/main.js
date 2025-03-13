@@ -57,3 +57,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    let currentIndex = 0;
+    const images = document.querySelectorAll(".gallery img");
+    const leftArrow = document.querySelector(".arrow.left");
+    const rightArrow = document.querySelector(".arrow.right");
+
+    function showImage(index) {
+        images.forEach((img, i) => {
+            img.classList.toggle("active", i === index);
+        });
+    }
+
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        showImage(currentIndex);
+    }
+
+    function prevImage() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showImage(currentIndex);
+    }
+
+    // Attach event listeners to buttons
+    leftArrow.addEventListener("click", prevImage);
+    rightArrow.addEventListener("click", nextImage);
+
+    // Ensure only the first image is visible on page load
+    showImage(currentIndex);
+});
