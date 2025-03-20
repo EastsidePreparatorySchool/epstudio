@@ -26,7 +26,5 @@
 {% endif %}
 
 {% if current_user.id == user.id or current_user.is_admin %}
-<!--not sure if we're ever gonna be using add_creation.html or if we'll stick to just the modal Cameron made
-<a href="{{ url_for('add_creation', user_id=user.id) }}">Add Creation</a>-->
 {% endif %}
 {% endblock %}

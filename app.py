@@ -133,58 +133,28 @@ def login():
 def auth_response():
     result = auth.complete_log_in(request.args)
     if "error" in result:
+        print("error")
+        flash("Authentication error: " + result["error"], "error")
         return render_template("auth_error.html", result=result)
+    
+    user_info = auth.get_user()
+    user_email = user_info["preferred_username"]
+
+    if not user:
+        if user_email.lower().endswith("@eastsideprep.org"):
+            # Create a new user record. Ensure that your User model supports these fields.
+            user = User(email=user_email)
+            db.session.add(user)
+            db.session.commit()
+            flash(f"New user created for {user_email}", "success")
+        else:
+            flash("User not authorized to access the application.", "error")
+            return "Error: User not authorized.", 403
+    
+    login_user(user)
+    flash(f"User {user.email} successfully logged in!", "success")
     return redirect(url_for("index"))
 
-# @app.route(app_config.REDIRECT_PATH)
-# def auth_response():
-#     result = auth.complete_log_in(request.args)
-    
-#     if "error" in result:
-#         return render_template("auth_error.html", result=result)
-
-#     # Get the user info from Azure AD
-#     user_info = auth.get_user()  # Ensure this function correctly fetches user details
-#     print(f"User info from Azure AD: {user_info}")  # Debugging
-
-#     # Check if we got valid user info
-#     if not user_info or "preferred_username" not in user_info:
-#         return "Error: Could not retrieve user info from Azure AD.", 400
-
-#     user_email = user_info["preferred_username"]
-#     print(f"Looking up user with email: {user_email}")  # Debugging
-
-#     # Retrieve user from your database
-#     user = User.query.filter_by(email=user_email).first()
-#     print(f"User retrieved from DB: {user}")  # Debugging
-
-#     if not user:
-#         return "Error: User not found in database. Please contact an admin.", 403
-
-#     # Log in the user with Flask-Login
-#     login_user(user)
-#     print(f"User {user.email} successfully logged in!")  # Debugging
-
-#     return redirect(url_for("index"))
-
-# @app.route(app_config.REDIRECT_PATH)
-# def auth_response():
-#     result = auth.complete_log_in(request.args)
-    
-#     if "error" in result:
-#         return render_template("auth_error.html", result=result)
-
-#     # Get the user info from Azure AD
-#     user_info = auth.get_user()  # Ensure this function exists and works
-
-#     # Retrieve user from your database
-#     user = User.query.filter_by(email=user_info["preferred_username"]).first()
-
-#     # Log in the user with Flask-Login
-#     login_user(user)
-
-#     # Redirect to home page
-#     return redirect(url_for("index"))
 
 
 @app.route("/call_downstream_api")

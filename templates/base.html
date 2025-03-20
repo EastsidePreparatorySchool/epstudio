@@ -34,7 +34,7 @@
             <a onclick="PullModal()">
                 <i class="fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
             </a>
-            <a href="{{ url_for('user_profile', user_id=4) }}">
+            <a href="{{ url_for('user_profile', user_id=current_user.id) }}">
                 <i class="fa-solid fa-user"></i> <!-- Profile icon -->
             </a>
         </div>
