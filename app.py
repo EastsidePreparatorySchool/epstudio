@@ -108,22 +108,7 @@ def login():
     """
     Handle user login.
     """
-    """
-    if oidc:
-        # In production, redirect to the OpenID Connect authentication server
-        return oidc.redirect_to_auth_server()
-    else:
-        # In development mode, log in as the first user in the database
-        user = User.query.first()
-        if user:
-            # Log in the user using Flask-Login
-            login_user(user)
-            # Redirect to the home page
-            return redirect(url_for('index'))
-        else:
-            # If no users exist, prompt to create a user
-            return 'No users exist in the database. Please create a user.'
-    """
+    
     return render_template("login.html", version=identity.__version__, **auth.log_in(
         scopes=app_config.SCOPE, # Have user consent to scopes during log-in
         redirect_uri=url_for("auth_response", _external=True), # Optional. If present, this absolute URL must match your app's redirect_uri registered in Azure Portal
@@ -138,12 +123,28 @@ def auth_response():
         return render_template("auth_error.html", result=result)
     
     user_info = auth.get_user()
+    print(user_info)
     user_email = user_info["preferred_username"]
+
+    # Check if user already exists in the database
+    user = User.query.filter_by(email=user_email).first()
 
     if not user:
         if user_email.lower().endswith("@eastsideprep.org"):
-            # Create a new user record. Ensure that your User model supports these fields.
-            user = User(email=user_email)
+            # Extract full name from the authentication response
+            full_name = user_info["name"]
+            if " " in full_name:
+                first_name, last_name = full_name.split(" ", 1)
+            else:
+                first_name = full_name or "FirstName"
+                last_name = "LastName"  # Provide a default if only one name is given
+
+            # Create a new user record with required fields
+            user = User(
+                first_name=first_name,
+                last_name=last_name,
+                email=user_email
+            )
             db.session.add(user)
             db.session.commit()
             flash(f"New user created for {user_email}", "success")
@@ -151,9 +152,11 @@ def auth_response():
             flash("User not authorized to access the application.", "error")
             return "Error: User not authorized.", 403
     
+    # Log in the user (existing or newly created)
     login_user(user)
     flash(f"User {user.email} successfully logged in!", "success")
     return redirect(url_for("index"))
+
 
 
 
@@ -172,7 +175,7 @@ def call_downstream_api():
 
 
 # Logout route
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 @login_required
 def logout():
     logout_user()

@@ -25,6 +25,11 @@
 <p>No creations yet.</p>
 {% endif %}
 
-{% if current_user.id == user.id or current_user.is_admin %}
+<!-- Show logout button only if user is viewing their own profile -->
+{% if current_user.id == user.id %}
+<form action="{{ url_for('logout') }}" method="post">
+    <button type="submit">Log Out</button>
+</form>
 {% endif %}
+
 {% endblock %}
