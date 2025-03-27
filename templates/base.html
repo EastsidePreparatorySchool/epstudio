@@ -11,6 +11,7 @@
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
 </head>
 <body>
+    <!-- navbar -->
     <nav class="navbar">
         <div class="nav-icons">
             <a href="{{ url_for('index') }}" class="brand">
@@ -45,6 +46,7 @@
             {% endif %}
         </div>
     </nav>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const searchInput = document.querySelector(".search-bar");
@@ -63,19 +65,35 @@
             });
         });
         </script>
-    <!-- old nav bar
-    <nav>
-        <div class="container">
-            <a href="{{ url_for('index') }}" class="brand">EPStudio</a>
-            <a href="{{ url_for('index') }}" class="icon-nav"><img src="/static/home.png" height="75px"></a>
-            <a href="{{ url_for('index') }}" style="text-align: left;"><img src="/static/filter.png" height="75px"></a>
-            <ul>
-                <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="{{ url_for('list_users') }}">Users</a></li>
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            </ul>
+
+    <!-- UPLOAD IMAGE -->
+    <div class="modal fade target1" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-custom">
+            <div class="modal-content" style="border-radius: 37px; border: dashed 4px #545454;">
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload Photo</h5>
+                    <button type="button" class="btn-close" onclick="closePopup()"></button>
+                </div>
+                <div class="modal-body" style="margin-bottom: 15%;margin-top: 7%;">
+                    <form id="uploadForm" action="/upload_creation" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="fileInput" class="form-label">Choose Photo</label>
+                            <input type="file" class="form-control" id="fileInput" name="file" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="titleInput" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="titleInput" name="title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="captionInput" class="form-label">Caption</label>
+                            <input type="text" class="form-control" id="captionInput" name="caption">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>                
+                </div>
         </div>
-    </nav> -->
+        </div>
+    </div>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}

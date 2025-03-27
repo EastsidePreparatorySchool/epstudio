@@ -32,35 +32,4 @@
         {% endfor %}
     </div>
 </div>
-
-<!-- Button and Modal -->
-<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button> -->
-<!-- UPLOAD IMAGE -->
-<div class="modal fade target1" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-    <div class="modal-dialog modal-dialog-custom">
-        <div class="modal-content" style="border-radius: 37px; border: dashed 4px #545454;">
-            <div class="modal-header">
-                <h5 class="modal-title">Upload Photo</h5>
-                <button type="button" class="btn-close" onclick="closePopup()"></button>
-            </div>
-            <div class="modal-body" style="margin-bottom: 15%;margin-top: 7%;">
-                <form id="uploadForm" action="{{ url_for('upload_creation') }}" method="POST" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="fileInput" class="form-label">Choose Photo</label>
-                        <input type="file" class="form-control" id="fileInput" name="file" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="titleInput" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="titleInput" name="title">
-                    </div>
-                    <div class="mb-3">
-                        <label for="captionInput" class="form-label">Caption</label>
-                        <input type="text" class="form-control" id="captionInput" name="caption">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Upload</button>
-                </form>                
-            </div>
-      </div>
-    </div>
-  </div>
 {% endblock %}
