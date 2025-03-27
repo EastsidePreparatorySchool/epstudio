@@ -46,6 +46,19 @@ function PullModal(){
     // nextPage.innerHTML = "style='display: block !important;'"
     exampleModal.show();
 }
+function FilterModal(){
+    const filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
+    let nextPage = document.getElementById("filterModal");
+    // nextPage.innerHTML = "style='display: block !important;'"
+    filterModal.show();
+}
+function closePopup() {
+    const modal = document.getElementById("filterModal");
+    if (modal) {
+      const bootstrapModal = bootstrap.Modal.getInstance(modal);
+      if (bootstrapModal) bootstrapModal.hide();
+    }
+  }
 
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".gal-img").forEach(img => {
