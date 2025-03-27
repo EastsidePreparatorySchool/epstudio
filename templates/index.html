@@ -33,86 +33,87 @@
     </div>
 </div>
 
-  <!--FILTER CREATIONS-->
-  <div class="modal fade target1" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+<!-- Filter Modal -->
+<div class="modal fade target1" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-custom" style="margin-left: 0; max-width: 400px;">
-      <div class="modal-content" style="border-radius: 37px; border: dashed 4px #545454;">
-        <div class="modal-header">
-          <h5 class="modal-title">Filter Creations</h5>
-          <button type="button" class="btn-close" onclick="closePopup()"></button>
+        <div class="modal-content" style="border-radius: 37px; border: dashed 4px #545454;">
+            <div class="modal-header">
+                <h5 class="modal-title">Filter Creations</h5>
+                <button type="button" class="btn-close" onclick="closePopup()"></button>
+            </div>
+            <div class="modal-body">
+                <form id="filterForm" method="get" action="{{ url_for('search') }}">
+                    <!-- Materials Used -->
+                    <div class="mb-3">
+                        <label class="form-label">Materials Used</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="materials" value="3D Print">
+                            <label class="form-check-label">3D Print</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="materials" value="Vinyl">
+                            <label class="form-check-label">Vinyl</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="materials" value="Lasercut">
+                            <label class="form-check-label">Lasercut</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="materials" value="Mixed Media">
+                            <label class="form-check-label">Mixed Media</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="materials" value="Other">
+                            <label class="form-check-label">Other</label>
+                        </div>
+                    </div>
+
+                    <!-- Grade Levels -->
+                    <div class="mb-3">
+                        <label class="form-label">Grade Level</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="grade" value="5th">
+                            <label class="form-check-label">5th</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="grade" value="6th">
+                            <label class="form-check-label">6th</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="grade" value="7th">
+                            <label class="form-check-label">7th</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="grade" value="8th">
+                            <label class="form-check-label">8th</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="grade" value="9th">
+                            <label class="form-check-label">9th</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="grade" value="10th">
+                            <label class="form-check-label">10th</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="grade" value="11th">
+                            <label class="form-check-label">11th</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="grade" value="12th">
+                            <label class="form-check-label">12th</label>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary me-2" onclick="closePopup()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="modal-body">
-            <form id="filterForm">
-                <!-- Work Type -->
-                <div class="mb-3">
-                  <label class="form-label">Materials</label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">3D Print</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">Vinyl</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">Lasercut</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">Mixed Media</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">Other</label>
-                  </div>
-                </div>
-      
-                <!-- Grade range -->
-                <div class="mb-3">
-                  <label class="form-label">Grade Level</label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">5th</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">6th</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">7th</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">8th</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">9th</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">10th</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">11th</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">12th</label>
-                  </div>
-                </div>
-      
-                <!-- Submit Button -->
-                <div class="d-flex justify-content-end">
-                  <button type="button" class="btn btn-secondary me-2" onclick="closePopup()">Cancel</button>
-                  <button type="submit" class="btn btn-primary">Apply Filters</button>
-                </div>
-              </form>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+
 {% endblock %}

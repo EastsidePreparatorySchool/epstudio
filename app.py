@@ -46,7 +46,7 @@ else:
     oidc = None
 
 # Import models after initializing db to avoid circular imports
-from models import User, Creation
+from models import User, Creation, Tool
 app.jinja_env.globals.update(enumerate=enumerate)
 
 # Define the user loader callback for Flask-Login
@@ -65,8 +65,9 @@ def load_user(user_id):
 @app.route('/')
 def index():
     recent_creations = Creation.query.order_by(Creation.creation_date.desc()).limit(5).all() # Query  5 most recent creations, descending creation date
+    tools = Tool.query.all()  # Fetch tools from the database
     print(f"User authenticated: {current_user.is_authenticated}")
-    return render_template('index.html', recent_creations=recent_creations)
+    return render_template('index.html', recent_creations=recent_creations, tools=tools)
 
 
 # Route to list all users
@@ -222,51 +223,68 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Ensure the folder exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-@app.route('/upload_creation', methods=['POST'])
+@app.route('/upload_creation', methods=['GET', 'POST'])
 @login_required
 def upload_creation():
-    if 'file' not in request.files:
-        flash('No file part')
-        return redirect(request.url)
-    
-    file = request.files['file']
-    caption = request.form.get('caption', '')
-    title = request.form.get('title','')
+    tools = Tool.query.all()  # Get all tools from the database
 
-    if file.filename == '':
-        flash('No selected file')
-        return redirect(request.url)
+    if request.method == 'POST':
+        file = request.files['file']
+        caption = request.form.get('caption', '')
+        title = request.form.get('title', '')
+        selected_tools = request.form.getlist('tools')  # List of selected tool IDs
 
-    if file:
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)  # Save the file
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
 
-        # Add to database
-        new_creation = Creation(
-            name=title,  
-            student_id=current_user.id,  # Replace with current user ID (use Flask-Login for actual user)
-            photo_path=file_path,
-            caption=caption
-        )
-        db.session.add(new_creation)
-        db.session.commit()
+        if file:
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
 
-        return redirect(url_for('index'))  # Redirect back to index page
-    
+            new_creation = Creation(
+                name=title,
+                student_id=current_user.id,
+                photo_path=file_path,
+                caption=caption
+            )
+
+            # Add selected tools to creation
+            for tool_id in selected_tools:
+                tool = Tool.query.get(tool_id)
+                if tool:
+                    new_creation.tools.append(tool)
+
+            db.session.add(new_creation)
+            db.session.commit()
+
+            return redirect(url_for('index'))
+
+    return render_template('upload_creation.html', tools=tools)  # Pass tools to the template
+
+
 @app.route('/search', methods=['GET'])
 def search():
     query = request.args.get('query', '').strip().lower()
-    
-    # Dummy data (Replace with database query)
-    recent_creations = [
-        {"name": "My First Creation", "caption": "This is my first creation.", "photo_path": "/static/example.png"},
-        {"name": "xmas_bunny_3.jpg", "caption": "test picture pls work", "photo_path": "/static/xmas_bunny_3.jpg"},
-    ]
+    selected_materials = request.args.getlist('materials')  # e.g., ['3D Print', 'Other']
 
+    # Start with the base query
+    creations = Creation.query
+
+    # Filter by tools (materials) if any are selected.
+    if selected_materials:
+        # Join the Tool table via the 'tools' relationship on Creation and filter by Tool.name
+        creations = creations.join(Creation.tools).filter(Tool.name.in_(selected_materials))
+
+    # Optionally, apply text search filtering (if a query is provided)
     if query:
-        filtered_creations = [c for c in recent_creations if query in c['name'].lower() or query in c['caption'].lower()]
-    else:
-        filtered_creations = recent_creations  # Show all if no query
-    
-    return render_template('gallery.html', recent_creations=filtered_creations)
+        creations = creations.filter(
+            (Creation.name.ilike(f'%{query}%')) |
+            (Creation.caption.ilike(f'%{query}%'))
+        )
+
+    filtered_creations = creations.all()
+
+    # Render the index page with the filtered creations.
+    return render_template('index.html', recent_creations=filtered_creations)

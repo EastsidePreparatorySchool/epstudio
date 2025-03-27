@@ -90,6 +90,22 @@
                             <label for="captionInput" class="form-label">Caption</label>
                             <input type="text" class="form-control" id="captionInput" name="caption">
                         </div>
+
+                        <!-- select materials/tools -->
+                        <div class="mb-3">
+                            <label for="toolsInput" class="form-label">Select Materials/Tools</label>
+                            <div id="toolsInput">
+                                {% for tool in tools %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="{{ tool.id }}" id="tool_{{ tool.id }}" name="tools">
+                                        <label class="form-check-label" for="tool_{{ tool.id }}">
+                                            {{ tool.name }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                                 
                         <button type="submit" class="btn btn-primary">Upload</button>
                     </form>                
                 </div>
