@@ -3,6 +3,9 @@
 {% block title %}{{ user.first_name }} {{ user.last_name }} - Profile{% endblock %}
 
 {% block content %}
+<div style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden;">
+    <img src="{{ user.pfp_path or '/static/example.png' }}"  style="width: 100%; height: 100%; object-fit: cover;">
+</div>
 <h1>{{ user.first_name }} {{ user.last_name }}</h1>
 <p>Email: {{ user.email }}</p>
 <p>Graduation Year: {{ user.gradyear }}</p>
