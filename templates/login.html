@@ -10,7 +10,7 @@
     <script src="/static/main.js"></script>
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
 </head>
-<!--this stuff wont center for some reason-->
+<!--I don't know if the sign in button is centered or not maybe I'm going crazy but it doesn't like like it??? i need like a ruler or something-->
 <body style="background-color:#2648A3; align-items:center">
     <div class = "loginPopup">
         <img src="{{'/static/epslogo.png'}}" alt="EPS Logo">
@@ -26,7 +26,7 @@
         <li>And then <a href="{{ url_for('auth_response') }}">proceed</a>.</li>
         </ol>
         {% else %}
-        <ul><a href='{{ auth_uri }}' class="btn btn-primary">Sign In</a></ul>
+        <ul><a href='{{ auth_uri }}' class="btn btn-primary" style="align-self:center">Sign In</a></ul>
         {% endif %}
     </div>
 </body>
