@@ -305,3 +305,9 @@ def search():
 
     # Render the index page with the filtered creations.
     return render_template('index.html', recent_creations=filtered_creations)
+
+#tools available in all templates, so they will show up in add creation's tools/materials section
+@app.context_processor
+def inject_tools():
+    tools = Tool.query.all()
+    return dict(tools=tools)
