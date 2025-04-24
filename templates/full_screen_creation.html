@@ -4,8 +4,9 @@
 
 {% block content %}
 <div class="container text-center">
-    <h2>{{ creation.name }}</h2>
     <img src="{{ creation.photo_path }}" class="img-fluid" alt="{{ creation.name }}">
+    <h2>{{ creation.name }}</h2>
     <p>{{ creation.caption }}</p>
+    <p>Created by: {{ creator.first_name }} {{ creator.last_name }}</p>
 </div>
 {% endblock %}

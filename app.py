@@ -78,10 +78,27 @@ def list_users():
     return render_template('users.html', users=users) # render template, user list
 
 # full screen image route
+#@app.route("/creation/<int:creation_id>/<int:student_id>")
+#def show_creation(creation_id, student_id):
+#    creation = Creation.query.get_or_404(creation_id)  # Fetch creation from database
+#    creator = creation.user  # Fetch the user based on student_id
+#    return render_template("full_screen_creation.html", creation=creation, creator = creator)
+
 @app.route("/creation/<int:creation_id>")
 def show_creation(creation_id):
-    creation = Creation.query.get_or_404(creation_id)  # Fetch creation from database
-    return render_template("full_screen_creation.html", creation=creation)
+    # Fetch the creation and the associated user (creator) in one query
+    creation = Creation.query.get_or_404(creation_id)  # Get the creation by ID
+    
+    # The creator is automatically accessible via the 'user' relationship
+    creator = creation.user  # This gives you the associated User (creator)
+
+    # If you want to ensure the user exists, you can add a check
+    if creator is None:
+        flash('Creator not found.', 'error')
+        return redirect(url_for('index'))  # Or handle this case accordingly
+    
+    # Pass both the creation and the creator to the template
+    return render_template("full_screen_creation.html", creation=creation, creator=creator)
 
 
 # Route to show a user's profile
