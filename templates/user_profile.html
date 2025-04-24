@@ -19,7 +19,7 @@
 <ul>
     {% for creation in user.creations %}
     <li>
-        <strong>{{ creation.name }}</strong> - {{ creation.creation_date.strftime('%Y-%m-%d') }}
+        <a href="{{ url_for('show_creation', creation_id=creation.id) }}"><strong>{{ creation.name }}</strong></a> - {{ creation.creation_date.strftime('%Y-%m-%d') }}
         <p>{{ creation.caption }}</p>
     </li>
     {% endfor %}
