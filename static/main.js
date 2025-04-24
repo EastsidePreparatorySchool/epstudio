@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".gal-img").forEach(img => {
         img.addEventListener("dblclick", function () {
             const creationId = this.dataset.id; // Ensure each image has a data-id attribute
+            console.log("Creation ID:", creationId);
             if (creationId) {
                 window.location.href = `/creation/${creationId}`;
             }
