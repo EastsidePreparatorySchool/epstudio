@@ -28,6 +28,7 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(150), nullable=False)  # User's last name
     email = db.Column(db.String(150), unique=True, nullable=False)  # User's email address
     gradyear = db.Column(db.Integer)  # Graduation year
+    bio = db.Column(db.Text, default='')
     settings_id = db.Column(db.Integer, db.ForeignKey('settings.id'))  # Foreign key to settings table
     pfp_path = db.Column(db.String(200))  # Path to profile picture file
     pronouns = db.Column(db.String(50))  # User's preferred pronouns

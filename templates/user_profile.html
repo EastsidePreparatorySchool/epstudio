@@ -10,8 +10,17 @@
 <p>Email: {{ user.email }}</p>
 <p>Graduation Year: {{ user.gradyear }}</p>
 <p>Pronouns: {{ user.pronouns }}</p>
+
 <p>Bio:</p>
-<input type="text">
+{% if current_user.id == user.id %}
+<form method="POST">
+    <input type="text" name="bio" value="{{ user.bio or '' }}">
+    <button type="submit">Save Bio</button>
+</form>
+{% else %}
+<p>{{ user.bio or "No bio yet." }}</p>
+{% endif %}
+
 <p></p>
 
 <h2>Creations</h2>

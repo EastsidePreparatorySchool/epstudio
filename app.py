@@ -102,11 +102,20 @@ def show_creation(creation_id):
 
 
 # Route to show a user's profile
-@app.route('/user/<int:user_id>')
+@app.route('/user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def user_profile(user_id):
     # Retrieve the user by ID or return a 404 error if not found
     user = User.query.get_or_404(user_id)
+
+    # Only allow editing your own profile
+    if request.method == 'POST':
+        new_bio = request.form.get('bio', '')
+        user.bio = new_bio
+        db.session.commit()
+        flash("Bio updated!", "success")
+        return redirect(url_for('user_profile', user_id=user.id))
+                        
     # Render the 'user_profile.html' template with the user object
     return render_template('user_profile.html', user=user)
 
