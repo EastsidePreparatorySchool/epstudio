@@ -3,9 +3,17 @@
 
 {% block content %}
 <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="7000" data-bs-pause="false">
+    <!-- full screen button -->
+    <button id="fs-toggle" 
+            class="btn btn-light position-absolute top-0 end-0 m-3" 
+            onclick="toggleFullscreen()" 
+            style="z-index: 1000;">
+        Fullscreen
+    </button>
+    
     <!-- indicators (little dots at the bottom) -->
     <div class="carousel-indicators">
-        {% for creation in creations %}
+        {% for creation in slides %}
         <button type="button"
                 data-bs-target="#galleryCarousel"
                 data-bs-slide-to="{{ loop.index0 }}"
@@ -17,14 +25,22 @@
     <!-- slides -->
     <!-- holds all the slides -->
     <div class="carousel-inner">
-        {% for creation in creations %}
+        {% for creation, creator in slides %}
         <div class="carousel-item {% if loop.first %}active{% endif %}">
             <img src="{{ creation.photo_path or '/static/example.png' }}"
                 class="d-block w-100"
                 alt="{{ creation.name }}">
             <div class="carousel-caption d-none d-md-block">
-            <h5>{{ creation.name }}</h5>
-            <p>{{ creation.caption }}</p>
+                <h5>{{ creation.name }}</h5>
+                <p>{{ creation.caption }}</p>
+            </div>
+            <!-- creator credit -->
+            <div class="creator-credit">
+                By
+                <a href="{{ url_for('user_profile', user_id=creator.id) }}"
+                    onclick="event.stopPropagation()">
+                    {{ creator.first_name }} {{ creator.last_name }}
+                </a>
             </div>
         </div>
         {% endfor %}

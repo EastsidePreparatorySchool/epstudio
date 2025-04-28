@@ -101,3 +101,34 @@ document.addEventListener("DOMContentLoaded", function() {
     // Ensure only the first image is visible on page load
     showImage(currentIndex);
 });
+
+function toggleFullscreen() {
+    const elem = document.getElementById("galleryCarousel");
+    if (document.fullscreenElement) {
+      // we are in fullscreen → exit
+      document.exitFullscreen();
+    } else {
+      // not fullscreen → request it
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+    }
+}
+
+// keep your existing fullscreenchange listener, but also update button text
+document.addEventListener('fullscreenchange', () => {
+const carousel = document.getElementById("galleryCarousel");
+const btn = document.getElementById("fs-toggle");
+
+if (document.fullscreenElement) {
+    carousel.classList.add('fullscreen');
+    btn.textContent = 'Exit Fullscreen';
+} else {
+    carousel.classList.remove('fullscreen');
+    btn.textContent = 'Fullscreen';
+}
+});

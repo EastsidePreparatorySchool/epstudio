@@ -239,8 +239,14 @@ def gallery():
     #creations = Creation.query.filter(Creation.photo_path != None).all()
     creations = Creation.query.all()
     print(creations)  # Debugging: Print to console
+
+    # build a list of tuples (creation, creator)
+    slides = []
+    for c in creations:
+        u = User.query.get(c.student_id)
+        slides.append((c,u))
     # Render the 'gallery.html' template with the list of creations
-    return render_template('gallery.html', creations=creations)
+    return render_template("gallery.html", slides=slides)
 
 # Set the folder to store uploaded files
 UPLOAD_FOLDER = 'static/uploads'
