@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+instance/          # SQLite file lives here
+.env               # your local env‑vars
+.vscode/
+.git
