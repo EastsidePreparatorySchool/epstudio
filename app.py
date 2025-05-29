@@ -340,3 +340,14 @@ def search():
 def inject_tools():
     tools = Tool.query.all()
     return dict(tools=tools)
+
+# displaying date for show creation
+def ordinal(date):
+    day = date.day
+    if 11 <= day <= 13:
+        suffix = 'th'
+    else:
+        suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(day % 10, 'th')
+    return date.strftime(f'%B {day}{suffix}, %Y')
+
+app.jinja_env.filters['ordinal'] = ordinal
