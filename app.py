@@ -64,7 +64,7 @@ def load_user(user_id):
 # Home page route
 @app.route('/')
 def index():
-    recent_creations = Creation.query.order_by(Creation.creation_date.desc()).limit(5).all() # Query  5 most recent creations, descending creation date
+    recent_creations = Creation.query.order_by(Creation.creation_date.desc()).all() # Query  5 most recent creations, descending creation date
     tools = Tool.query.all()  # Fetch tools from the database
     print(f"User authenticated: {current_user.is_authenticated}")
     return render_template('index.html', recent_creations=recent_creations, tools=tools)
