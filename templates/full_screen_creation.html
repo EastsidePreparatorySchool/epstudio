@@ -8,5 +8,6 @@
     <h2>{{ creation.name }}</h2>
     <p>{{ creation.caption }}</p>
     <p>Created by: <a href="{{ url_for('user_profile', user_id=creator.id) }}"> {{ creator.first_name }} {{ creator.last_name }}</a></p>
+    <p>{{creation.creation_date.strftime('%B %d, %Y')}}</p>
 </div>
 {% endblock %}
