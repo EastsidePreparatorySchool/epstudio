@@ -11,7 +11,7 @@ import requests
 from flask_session import Session
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.utils import secure_filename
-
+from datetime import datetime
 
 import app_config
 
@@ -304,21 +304,35 @@ def search():
     # Start with the base query
     creations = Creation.query
 
-    # Filter by tools (materials) if any are selected.
+    # Filter by tools (materials) if any are selected
     if selected_materials:
-        # Join the Tool table via the 'tools' relationship on Creation and filter by Tool.name
         creations = creations.join(Creation.tools).filter(Tool.name.in_(selected_materials))
 
-    # Optionally, apply text search filtering (if a query is provided)
+    # Filter by text query
     if query:
         creations = creations.filter(
             (Creation.name.ilike(f'%{query}%')) |
             (Creation.caption.ilike(f'%{query}%'))
         )
 
+    # Filter by date range
+    start_date_str = request.args.get('start_date')
+    end_date_str = request.args.get('end_date')
+
+    try:
+        start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else None
+        end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else None
+    except ValueError:
+        start_date = end_date = None
+
+    if start_date:
+        creations = creations.filter(Creation.creation_date >= start_date)
+    if end_date:
+        creations = creations.filter(Creation.creation_date <= end_date)
+
+    # Finalize the filtered list
     filtered_creations = creations.all()
 
-    # Render the index page with the filtered creations.
     return render_template('index.html', recent_creations=filtered_creations)
 
 #tools available in all templates, so they will show up in add creation's tools/materials section
