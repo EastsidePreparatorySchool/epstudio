@@ -27,7 +27,10 @@
     <div class="carousel-inner">
         {% for creation, creator in slides %}
         <div class="carousel-item {% if loop.first %}active{% endif %}">
-            <img src="{{ creation.photo_path or '/static/example.png' }}"
+            <!--Again, like in index.html, this is some temporary code to work with both the old upload system and the new upload system-->
+            <img src="{{ url_for('static', filename=(creation.photo_path
+                        .replace('static/', '')
+                        .replace('\\', '/')) if creation.photo_path else 'example.png') }}"
                 class="d-block w-100"
                 alt="{{ creation.name }}">
             <div class="carousel-caption d-none d-md-block">

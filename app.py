@@ -270,15 +270,23 @@ def upload_creation():
             flash('No selected file')
             return redirect(request.url)
 
-        if file:
+        if file: # Edited the function here a bit as the original photo upload system had issues, namely in displaying images in full screen
             filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
+            #file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            #file.save(file_path)
+            
+            # Physical save location (filesystem)
+            upload_dir = os.path.join(app.static_folder, "uploads")
+            os.makedirs(upload_dir, exist_ok=True)
+            file.save(os.path.join(upload_dir, filename))
+
+            # Store URL-relative path (THIS is what templates use)
+            photo_path = f"uploads/{filename}"
 
             new_creation = Creation(
                 name=title,
                 student_id=current_user.id,
-                photo_path=file_path,
+                photo_path=photo_path,
                 caption=caption
             )
 

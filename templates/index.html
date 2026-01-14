@@ -12,10 +12,16 @@
         {% for creation in recent_creations %}
             <div class="col">
                 <div class="card img-container">
-                    <img src="{{ creation.photo_path or '/static/example.png' }}" 
+                    <!--<img src="{{ url_for('static', filename=creation.photo_path if creation.photo_path else 'example.png') }}" 
                          class="card-img-top gal-img" 
                          alt="{{ creation.name }}" 
-                         data-id="{{ creation.id }}">                    
+                         data-id="{{ creation.id }}">    This is technically the correct code but were using the temporary code below as we transition the old version of the photo path with the new one-->
+                    <img src="{{ url_for('static', filename=(creation.photo_path
+                        .replace('static/', '')
+                        .replace('\\', '/')) if creation.photo_path else 'example.png') }}"
+                        class="card-img-top gal-img"
+                        alt="{{ creation.name }}"
+                        data-id="{{ creation.id }}">                 
                     <div class="card-body">
                         <input type="checkbox" class="toggle-checkbox" id="toggle{{ loop.index }}">
                         <label for="toggle{{ loop.index }}">

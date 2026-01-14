@@ -4,7 +4,13 @@
 
 {% block content %}
 <div class="container text-center">
-    <img src="{{ creation.photo_path }}" class="img-fluid" alt="{{ creation.name }}">
+    <!--The img src code works correctly for images uploaded after this, couldn't find a way to fix it for previous ones because it needed fixing with the path creation itself, unless we wanted to reset their paths but idk how-->
+    <!--Ok nevermind so this code works for both images uploaded before the fix and images uploaded after, so generally there shouldn't be any issues and if anything we could continue using this img src code-->
+    <div class="img-wrapper">
+        <img src="{{ url_for('static', filename=(creation.photo_path
+                    .replace('static/', '')
+                    .replace('\\', '/')) if creation.photo_path else 'example.png') }}" alt="{{ creation.name }}">
+        </div>
     <h2>{{ creation.name }}</h2>
     <p>{{ creation.caption }}</p>
     <p>Created by: <a href="{{ url_for('user_profile', user_id=creator.id) }}"> {{ creator.first_name }} {{ creator.last_name }}</a></p>
