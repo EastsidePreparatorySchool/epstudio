@@ -10,7 +10,7 @@
         <img src="{{ url_for('static', filename=(creation.photo_path
                     .replace('static/', '')
                     .replace('\\', '/')) if creation.photo_path else 'example.png') }}" alt="{{ creation.name }}">
-        </div>
+    </div>
     <h2>{{ creation.name }}</h2>
     <p>{{ creation.caption }}</p>
     <p>Created by: <a href="{{ url_for('user_profile', user_id=creator.id) }}"> {{ creator.first_name }} {{ creator.last_name }}</a></p>

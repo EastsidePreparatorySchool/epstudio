@@ -28,9 +28,40 @@
 <ul>
     {% for creation in user.creations %}
     <li>
-        <a href="{{ url_for('show_creation', creation_id=creation.id) }}"><strong>{{ creation.name }}</strong></a> - {{ creation.creation_date.strftime('%Y-%m-%d') }}
+        <a href="{{ url_for('show_creation', creation_id=creation.id) }}"><strong>{{ creation.name }}</strong></a> - {{ creation.creation_date.strftime('%Y-%m-%d') }} {% if current_user.id == user.id %} - <button class="btn btn-danger"
+        data-bs-toggle="modal"
+        data-bs-target="#deleteModal{{ creation.id }}">Delete</button> {% endif %}
         <p>{{ creation.caption }}</p>
     </li>
+    <div class="modal fade" id="deleteModal{{ creation.id }}" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Delete "{{ creation.name }}"?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                This action cannot be undone.
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Cancel
+                </button>
+
+                <form method="POST"
+                    action="{{ url_for('delete_creation', creation_id=creation.id) }}">
+                <button type="submit" class="btn btn-danger">
+                    Yes, Delete
+                </button>
+                </form>
+            </div>
+
+            </div>
+        </div>
+    </div>
     {% endfor %}
 </ul>
 {% else %}

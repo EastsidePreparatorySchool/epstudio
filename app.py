@@ -359,3 +359,20 @@ def ordinal(date):
     return date.strftime(f'%B {day}{suffix}, %Y')
 
 app.jinja_env.filters['ordinal'] = ordinal
+
+# Deletion feature
+@app.route("/creation/<int:creation_id>/delete", methods=["POST"])
+@login_required
+def delete_creation(creation_id):
+    creation = Creation.query.get_or_404(creation_id)
+
+    # Only allow owner to delete
+    if creation.student_id != current_user.id:
+        flash("Not authorized", "error")
+        return redirect(url_for("user_profile", user_id=current_user.id))
+
+    db.session.delete(creation)
+    db.session.commit()
+
+    flash("Creation deleted", "success")
+    return redirect(url_for("user_profile", user_id=current_user.id))
