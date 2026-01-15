@@ -358,7 +358,7 @@ a.button:hover {
 }
 
 .img-wrapper {
-    height: 300px;        /* fixed height for all thumbnails */
+    height: 400px;        /* fixed height for all thumbnails */
     display: flex;        /* use flex to center the image */
     justify-content: center;
     align-items: center;

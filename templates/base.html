@@ -83,8 +83,14 @@
                             <input type="file" class="form-control" id="fileInput" name="file" required>
                         </div>
                         <div class="mb-3">
-                            <label for="titleInput" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="titleInput" name="title">
+                            <label for="titleInput" class="form-label">Title (50 Characters Max)</label>
+                            <!--<input type="text" class="form-control" id="titleInput" name="title">-->
+                            <input type="text"
+                                class="form-control"
+                                id="titleInput"
+                                name="title"
+                                maxlength="50"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="captionInput" class="form-label">Caption</label>
