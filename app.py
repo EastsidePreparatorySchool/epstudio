@@ -147,7 +147,8 @@ def auth_response():
     if "error" in result:
         print("error")
         flash("Authentication error: " + result["error"], "error")
-        return render_template("auth_error.html", result=result)
+        #return render_template("auth_error.html", result=result)
+        return result, 400
     
     user_info = auth.get_user()
     print(user_info)
