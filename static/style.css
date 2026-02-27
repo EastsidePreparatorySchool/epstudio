@@ -370,3 +370,10 @@ a.button:hover {
     width: auto;          /* maintain aspect ratio */
     display: block;
 }
+
+.auto-grid { /*for columns*/
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    width: 100%;
+}
