@@ -14,6 +14,12 @@ creations_tools = db.Table('creations_tools',
     db.Column('tool_id', db.Integer, db.ForeignKey('tool.id'), primary_key=True)
 )
 
+favorites = db.Table(
+    'favorites',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+    db.Column('creation_id', db.Integer, db.ForeignKey('creation.id'), primary_key=True)
+)
+
 # ==========================
 #         MODELS
 # ==========================
@@ -39,6 +45,11 @@ class User(db.Model, UserMixin):
     # One-to-one relationship with Settings
     creations = db.relationship('Creation', back_populates='user')
     # One-to-many relationship with Creation
+    favorite_creations = db.relationship(
+        'Creation',
+        secondary=favorites,
+        back_populates='favorited_by'
+    )
 
     def __repr__(self):
         # Representation of the User object, useful for debugging
@@ -79,6 +90,11 @@ class Creation(db.Model):
     # Back-reference to User; many creations can belong to one user
     tools = db.relationship('Tool', secondary=creations_tools, back_populates='creations')
     # Many-to-many relationship with Tool through the creations_tools association table
+    favorited_by = db.relationship(
+        'User',
+        secondary=favorites,
+        back_populates='favorite_creations'
+    )
 
     def __repr__(self):
         # Representation of the Creation object

@@ -24,13 +24,22 @@
                         alt="{{ creation.name }}"
                         data-id="{{ creation.id }}">                 
                     <div class="card-body">
-                        <input type="checkbox" class="toggle-checkbox" id="toggle{{ loop.index }}">
+                        <input
+                            type="checkbox"
+                            class="toggle-checkbox favorite-toggle"
+                            id="toggle{{ loop.index }}"
+                            data-creation-id="{{ creation.id }}"
+                            {% if creation.id in favorite_creation_ids %}checked{% endif %}
+                        >
                         <label for="toggle{{ loop.index }}">
                         <i class="star-icon toggle-icon">
                             <span class="original-text">☆</span>
                             <span class="new-text">★</span>
                         </i>
                         </label>
+                        {% if not current_user.is_authenticated %}
+                            <small class="text-muted d-block">Log in to save favorites</small>
+                        {% endif %}
                         <b class="card-text">{{ creation.name }}</b>
                         <!--<p class="card-text">{{ creation.caption }}</p>-->
                     </div>

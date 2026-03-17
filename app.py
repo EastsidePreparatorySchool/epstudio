@@ -49,6 +49,13 @@ else:
 from models import User, Creation, Tool
 app.jinja_env.globals.update(enumerate=enumerate)
 
+
+def get_favorite_creation_ids():
+    if not current_user.is_authenticated:
+        return set()
+
+    return {creation.id for creation in current_user.favorite_creations}
+
 # Define the user loader callback for Flask-Login
 # This function retrieves a user by ID from the database
 @login_manager.user_loader
@@ -67,7 +74,12 @@ def index():
     recent_creations = Creation.query.order_by(Creation.creation_date.desc()).all() # Query  5 most recent creations, descending creation date
     tools = Tool.query.all()  # Fetch tools from the database
     print(f"User authenticated: {current_user.is_authenticated}")
-    return render_template('index.html', recent_creations=recent_creations, tools=tools)
+    return render_template(
+        'index.html',
+        recent_creations=recent_creations,
+        tools=tools,
+        favorite_creation_ids=get_favorite_creation_ids()
+    )
 
 
 # Route to list all users
@@ -342,7 +354,33 @@ def search():
     # Finalize the filtered list
     filtered_creations = creations.all()
 
-    return render_template('index.html', recent_creations=filtered_creations)
+    return render_template(
+        'index.html',
+        recent_creations=filtered_creations,
+        favorite_creation_ids=get_favorite_creation_ids()
+    )
+
+
+@app.route('/api/favorites/<int:creation_id>', methods=['POST'])
+@login_required
+def toggle_favorite(creation_id):
+    creation = Creation.query.get_or_404(creation_id)
+    payload = request.get_json(silent=True) or {}
+    should_favorite = bool(payload.get('favorite'))
+
+    if should_favorite:
+        if creation not in current_user.favorite_creations:
+            current_user.favorite_creations.append(creation)
+    else:
+        if creation in current_user.favorite_creations:
+            current_user.favorite_creations.remove(creation)
+
+    db.session.commit()
+
+    return jsonify({
+        'creation_id': creation.id,
+        'favorite': creation in current_user.favorite_creations
+    })
 
 #tools available in all templates, so they will show up in add creation's tools/materials section
 @app.context_processor

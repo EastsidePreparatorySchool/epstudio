@@ -72,6 +72,45 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".favorite-toggle").forEach(toggle => {
+        toggle.addEventListener("change", async function () {
+            const creationId = this.dataset.creationId;
+
+            try {
+                const response = await fetch(`/api/favorites/${creationId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ favorite: this.checked })
+                });
+
+                if (response.redirected) {
+                    window.location.href = response.url;
+                    return;
+                }
+
+                if (response.status === 401) {
+                    window.location.href = "/login";
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error("Failed to save favorite");
+                }
+
+                const data = await response.json();
+                this.checked = data.favorite;
+            } catch (error) {
+                this.checked = !this.checked;
+                console.error(error);
+                alert("We couldn't save that favorite. Please try again.");
+            }
+        });
+    });
+});
+
 document.addEventListener("DOMContentLoaded", function() {
     let currentIndex = 0;
     const images = document.querySelectorAll(".gallery img");
